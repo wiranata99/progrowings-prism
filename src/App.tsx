@@ -1,6 +1,11 @@
 import "./styles/globals.css";
-import { Dashboard } from "./pages/Dashboard";
+import { BrowserRouter } from "react-router-dom";
+import AppRouter from "./router";
 
 export default function App() {
-  return <Dashboard />;
+  return (
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
+  );
 }

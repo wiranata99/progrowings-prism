@@ -1,65 +1,136 @@
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+const data = [
+  { month: "Jan", value: 1.90 },
+  { month: "Feb", value: 2.05 },
+  { month: "Mar", value: 2.01 },
+  { month: "Apr", value: 2.18 },
+  { month: "May", value: 2.32 },
+  { month: "Jun", value: 2.37 },
+  { month: "Jul", value: 2.42 },
+];
+
 export default function TrendChart() {
-  const data = [1.9, 2.1, 2.0, 2.2, 2.4, 2.3, 2.42];
-
-  const max = Math.max(...data);
-  const min = Math.min(...data);
-
-  const points = data
-    .map((value, index) => {
-      const x = (index / (data.length - 1)) * 560;
-      const y = 140 - ((value - min) / (max - min)) * 110;
-      return `${x},${y}`;
-    })
-    .join(" ");
-
   return (
-    <div className="rounded-3xl bg-slate-900 p-8">
+    <div className="h-[320px]">
 
-      <div className="flex items-center justify-between">
+      <div className="mb-6 flex items-start justify-between">
 
         <div>
 
-          <p className="text-cyan-400">
-            Gross NPL Trend
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-400">
+            Enterprise Trend
           </p>
 
           <h2 className="mt-2 text-3xl font-bold">
             2.42%
           </h2>
 
+          <p className="mt-1 text-sm text-slate-400">
+            Latest observation
+          </p>
+
         </div>
 
-        <span className="rounded-full bg-green-500/20 px-4 py-2 text-green-400">
+        <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-sm font-semibold text-emerald-400">
           Stable
         </span>
 
       </div>
 
-      <svg
-        viewBox="0 0 560 160"
-        className="mt-8 w-full"
+      <ResponsiveContainer
+        width="100%"
+        height={210}
       >
 
-        <polyline
-          fill="none"
-          stroke="#22D3EE"
-          strokeWidth="4"
-          points={points}
-        />
+        <AreaChart data={data}>
 
-      </svg>
+          <defs>
 
-      <div className="mt-6 flex justify-between text-xs text-slate-500">
+            <linearGradient
+              id="riskArea"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
 
-        <span>Jan</span>
-        <span>Feb</span>
-        <span>Mar</span>
-        <span>Apr</span>
-        <span>May</span>
-        <span>Jun</span>
-        <span>Jul</span>
+              <stop
+                offset="0%"
+                stopColor="#22D3EE"
+                stopOpacity={0.35}
+              />
 
-      </div>
+              <stop
+                offset="100%"
+                stopColor="#22D3EE"
+                stopOpacity={0}
+              />
+
+            </linearGradient>
+
+          </defs>
+
+          <CartesianGrid
+            stroke="#263244"
+            strokeDasharray="4 6"
+          />
+
+          <XAxis
+            dataKey="month"
+            tick={{
+              fill: "#94A3B8",
+              fontSize: 11,
+            }}
+            tickLine={false}
+            axisLine={false}
+          />
+
+          <YAxis
+            tick={{
+              fill: "#94A3B8",
+              fontSize: 11,
+            }}
+            tickLine={false}
+            axisLine={false}
+            domain={["dataMin - 0.05", "dataMax + 0.05"]}
+          />
+
+          <Tooltip
+            contentStyle={{
+              background: "#0F172A",
+              border: "1px solid #334155",
+              borderRadius: "14px",
+              color: "white",
+            }}
+          />
+
+          <Area
+            type="monotone"
+            dataKey="value"
+            stroke="#22D3EE"
+            strokeWidth={3}
+            fill="url(#riskArea)"
+            animationDuration={900}
+            activeDot={{
+              r: 6,
+              stroke: "#22D3EE",
+              strokeWidth: 2,
+              fill: "#ffffff",
+            }}
+          />
+
+        </AreaChart>
+
+      </ResponsiveContainer>
 
     </div>
   );

@@ -11,26 +11,59 @@ const market = [
   ["US 10Y", "4.36%"],
 ];
 
+const alerts = [
+  {
+    level: "HIGH",
+    title: "Recovery Plan Trigger",
+    desc: "NPL monitoring threshold remains active.",
+    color: "text-rose-400",
+  },
+  {
+    level: "MEDIUM",
+    title: "USD Volatility",
+    desc: "Monitor FX borrowers with USD exposure.",
+    color: "text-amber-400",
+  },
+  {
+    level: "LOW",
+    title: "Liquidity Position",
+    desc: "LCR remains comfortably above regulatory minimum.",
+    color: "text-emerald-400",
+  },
+];
+
 export function Dashboard() {
   return (
     <AppLayout>
 
+      {/* HERO */}
+
       <div className="grid grid-cols-12 gap-6">
 
         <div className="col-span-8">
+
           <ExecutiveScore
             score={92}
             status="Healthy Institution"
           />
+
         </div>
 
         <Panel className="col-span-4">
 
           <div className="flex items-center justify-between">
 
-            <h2 className="text-xl font-semibold">
-              Executive Brief
-            </h2>
+            <div>
+
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-400">
+                AI Executive Copilot
+              </p>
+
+              <h2 className="mt-2 text-2xl font-bold">
+                Today's Executive Brief
+              </h2>
+
+            </div>
 
             <StatusBadge
               status="success"
@@ -39,17 +72,46 @@ export function Dashboard() {
 
           </div>
 
-          <p className="mt-6 leading-7 text-slate-300">
-            Corporate portfolio remains resilient.
-            FX volatility should continue to be monitored.
-            Review Top 20 corporate borrowers before month end.
-          </p>
+          <div className="mt-8 space-y-6">
+
+            {alerts.map((item) => (
+
+              <div
+                key={item.title}
+                className="border-l-2 border-slate-700 pl-4"
+              >
+
+                <p className={`text-xs font-bold ${item.color}`}>
+
+                  {item.level}
+
+                </p>
+
+                <h3 className="mt-2 font-semibold">
+
+                  {item.title}
+
+                </h3>
+
+                <p className="mt-1 text-sm leading-6 text-slate-400">
+
+                  {item.desc}
+
+                </p>
+
+              </div>
+
+            ))}
+
+          </div>
 
         </Panel>
 
       </div>
 
-      <div className="grid grid-cols-12 gap-6">
+      {/* MARKET */}
+
+      <div className="mt-6 grid grid-cols-12 gap-6">
 
         <Panel
           title="Market Monitor"
@@ -62,15 +124,19 @@ export function Dashboard() {
 
               <div
                 key={name}
-                className="rounded-xl border border-slate-700 p-5"
+                className="rounded-2xl border border-slate-700 bg-slate-900 p-5 transition-all duration-300 hover:border-cyan-500/30"
               >
 
-                <p className="text-slate-400">
+                <p className="text-sm text-slate-400">
+
                   {name}
+
                 </p>
 
-                <h3 className="mt-2 text-2xl font-bold">
+                <h3 className="mt-2 text-3xl font-bold">
+
                   {value}
+
                 </h3>
 
               </div>
@@ -82,7 +148,7 @@ export function Dashboard() {
         </Panel>
 
         <Panel
-          title="Trend"
+          title="Market Trend"
           className="col-span-4"
         >
 
