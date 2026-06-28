@@ -4,9 +4,10 @@ import {
   Droplets,
   FileText,
   LayoutDashboard,
-  Leaf,
+ Leaf,
   Settings,
   ShieldCheck,
+  TrendingUp,
   Zap,
 } from "lucide-react";
 
@@ -39,14 +40,19 @@ const executiveMenu: MenuGroup[] = [
     title: "RISK INTELLIGENCE",
     items: [
       {
-        name: "Credit",
+        name: "Credit Intelligence",
         icon: ShieldCheck,
         path: "/credit",
       },
       {
-        name: "Treasury",
+        name: "Treasury Intelligence",
         icon: BarChart3,
         path: "/treasury",
+      },
+      {
+        name: "Market Risk Intelligence",
+        icon: TrendingUp,
+        path: "/market-risk",
       },
       {
         name: "Liquidity",
@@ -96,8 +102,6 @@ export default function Sidebar() {
   return (
     <aside className="flex h-screen w-72 flex-col border-r border-slate-800 bg-[#08111E]">
 
-      {/* Header */}
-
       <div className="border-b border-slate-800 px-8 py-8">
 
         <h1 className="text-4xl font-black tracking-tight text-cyan-400">
@@ -109,8 +113,6 @@ export default function Sidebar() {
         </p>
 
       </div>
-
-      {/* Navigation */}
 
       <div className="flex-1 overflow-y-auto px-5 py-6">
 
@@ -149,7 +151,7 @@ export default function Sidebar() {
                       <>
 
                         {isActive && (
-                          <div className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-cyan-400" />
+                          <div className="absolute bottom-2 left-0 top-2 w-1 rounded-r-full bg-cyan-400" />
                         )}
 
                         <Icon
@@ -177,8 +179,6 @@ export default function Sidebar() {
         ))}
 
       </div>
-
-      {/* Footer */}
 
       <div className="border-t border-slate-800 p-6">
 
