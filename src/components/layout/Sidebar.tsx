@@ -14,6 +14,10 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
+interface SidebarProps {
+  onClose: () => void;
+}
+
 interface MenuItem {
   name: string;
   icon: LucideIcon;
@@ -98,7 +102,7 @@ const executiveMenu: MenuGroup[] = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ onClose }: SidebarProps) {
   return (
     <aside className="flex h-screen w-72 flex-col border-r border-slate-800 bg-[#08111E]">
 
@@ -138,6 +142,7 @@ export default function Sidebar() {
                   <NavLink
                     key={item.name}
                     to={item.path}
+                    onClick={onClose}
                     className={({ isActive }) =>
                       `group relative flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300 ${
                         isActive

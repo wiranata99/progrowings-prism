@@ -20,9 +20,9 @@ const data = [
 
 export default function TrendChart() {
   return (
-    <div className="h-[320px]">
+    <div className="h-[260px] sm:h-[300px] lg:h-[320px]">
 
-      <div className="mb-6 flex items-start justify-between">
+      <div className="mb-5 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-start sm:justify-between">
 
         <div>
 
@@ -30,7 +30,7 @@ export default function TrendChart() {
             Enterprise Trend
           </p>
 
-          <h2 className="mt-2 text-3xl font-bold">
+          <h2 className="mt-2 text-2xl font-bold sm:text-3xl">
             2.42%
           </h2>
 
@@ -40,7 +40,7 @@ export default function TrendChart() {
 
         </div>
 
-        <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-sm font-semibold text-emerald-400">
+        <span className="w-fit rounded-full bg-emerald-500/15 px-3 py-1 text-sm font-semibold text-emerald-400">
           Stable
         </span>
 
@@ -48,10 +48,18 @@ export default function TrendChart() {
 
       <ResponsiveContainer
         width="100%"
-        height={210}
+        height="70%"
       >
 
-        <AreaChart data={data}>
+        <AreaChart
+          data={data}
+          margin={{
+            top: 10,
+            right: 5,
+            left: -20,
+            bottom: 0,
+          }}
+        >
 
           <defs>
 
@@ -95,6 +103,7 @@ export default function TrendChart() {
           />
 
           <YAxis
+            width={34}
             tick={{
               fill: "#94A3B8",
               fontSize: 11,
@@ -105,6 +114,11 @@ export default function TrendChart() {
           />
 
           <Tooltip
+            cursor={{
+              stroke: "#22D3EE",
+              strokeWidth: 1,
+              strokeDasharray: "4 4",
+            }}
             contentStyle={{
               background: "#0F172A",
               border: "1px solid #334155",

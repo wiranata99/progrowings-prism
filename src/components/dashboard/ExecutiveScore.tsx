@@ -53,11 +53,11 @@ export default function ExecutiveScore({
   status,
 }: ExecutiveScoreProps) {
   return (
-    <div className="rounded-3xl border border-cyan-500/20 bg-[#101827] p-10 shadow-2xl">
+    <div className="rounded-3xl border border-cyan-500/20 bg-[#101827] p-4 shadow-2xl sm:p-6 lg:p-10">
 
       {/* HEADER */}
 
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 
         <div>
 
@@ -65,13 +65,13 @@ export default function ExecutiveScore({
             Executive Command Center
           </p>
 
-          <h2 className="mt-3 text-4xl font-bold">
+          <h2 className="mt-3 text-2xl font-bold sm:text-3xl lg:text-4xl">
             Enterprise Risk Score
           </h2>
 
         </div>
 
-        <span className="rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-400">
+        <span className="w-fit rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-400">
           {status}
         </span>
 
@@ -79,13 +79,13 @@ export default function ExecutiveScore({
 
       {/* SCORE */}
 
-      <div className="mt-10 flex items-end gap-5">
+      <div className="mt-8 flex flex-col items-start gap-3 sm:mt-10 sm:flex-row sm:items-end sm:gap-5">
 
-        <h1 className="text-8xl font-bold leading-none">
+        <h1 className="text-5xl font-bold leading-none sm:text-6xl lg:text-8xl">
           {score}
         </h1>
 
-        <div className="mb-3">
+        <div className="mb-0 sm:mb-3">
 
           <p className="text-sm text-slate-400">
             Overall Enterprise Health
@@ -116,7 +116,7 @@ export default function ExecutiveScore({
 
       <div className="mt-10">
 
-        <div className="mb-5 flex items-center justify-between">
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
 
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
             Enterprise Risk Domains
@@ -128,7 +128,7 @@ export default function ExecutiveScore({
 
         </div>
 
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
 
           {domains.map((domain) => (
 
@@ -141,9 +141,9 @@ export default function ExecutiveScore({
                 {domain.name}
               </p>
 
-              <div className="mt-4 flex items-center justify-between">
+              <div className="mt-4 flex items-center justify-between gap-3">
 
-                <h3 className="text-4xl font-bold">
+                <h3 className="text-2xl font-bold sm:text-3xl lg:text-4xl">
                   {domain.score}
                 </h3>
 

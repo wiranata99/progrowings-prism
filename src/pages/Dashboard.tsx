@@ -38,9 +38,9 @@ export function Dashboard() {
 
       {/* HERO */}
 
-      <div className="grid grid-cols-12 gap-6">
+      <div className="grid gap-6 lg:grid-cols-12">
 
-        <div className="col-span-8">
+        <div className="lg:col-span-8">
 
           <ExecutiveScore
             score={92}
@@ -49,7 +49,7 @@ export function Dashboard() {
 
         </div>
 
-        <Panel className="col-span-4">
+        <Panel className="lg:col-span-4">
 
           <div className="flex items-center justify-between">
 
@@ -111,11 +111,11 @@ export function Dashboard() {
 
       {/* MARKET */}
 
-      <div className="mt-6 grid grid-cols-12 gap-6">
+      <div className="mt-6 grid gap-6 lg:grid-cols-12">
 
         <Panel
           title="Market Monitor"
-          className="col-span-8"
+          className="lg:col-span-8"
         >
 
           <div className="grid grid-cols-2 gap-5">
@@ -149,7 +149,7 @@ export function Dashboard() {
 
         <Panel
           title="Market Trend"
-          className="col-span-4"
+          className="lg:col-span-4"
         >
 
           <TrendChart />
