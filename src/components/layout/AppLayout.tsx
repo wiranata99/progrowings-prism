@@ -21,7 +21,7 @@ export default function AppLayout({
       {/* Desktop Sidebar */}
 
       <div className="hidden xl:block">
-        <Sidebar isOpen={true} onClose={closeSidebar} />
+        <Sidebar onClose={closeSidebar} />
       </div>
 
       {/* Mobile Sidebar Overlay */}
@@ -38,7 +38,7 @@ export default function AppLayout({
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
+          <Sidebar onClose={closeSidebar} />
         </div>
       </div>
 
