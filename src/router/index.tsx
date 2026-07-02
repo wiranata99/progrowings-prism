@@ -5,6 +5,7 @@ import CreditRisk from "../pages/CreditRisk";
 import Treasury from "../pages/Treasury";
 import MarketRisk from "../pages/MarketRisk";
 import StressTesting from "../pages/StressTesting";
+import Liquidity from "../pages/Liquidity";
 
 export default function AppRouter() {
   return (
@@ -23,6 +24,11 @@ export default function AppRouter() {
       <Route
         path="/credit"
         element={<CreditRisk />}
+      />
+
+      <Route
+        path="/liquidity"
+        element={<Liquidity />}
       />
 
       <Route

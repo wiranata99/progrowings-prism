@@ -50,7 +50,7 @@ const executiveMenu: MenuGroup[] = [
       {
         name: "Liquidity Intelligence",
         icon: Droplets,
-        path: "#",
+        path: "/liquidity",
       },
       {
         name: "Profitability Intelligence",
