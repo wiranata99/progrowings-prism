@@ -4,10 +4,9 @@ import {
   Droplets,
   FileText,
   LayoutDashboard,
- Leaf,
+  DollarSign,
   Settings,
   ShieldCheck,
-  TrendingUp,
   Zap,
 } from "lucide-react";
 
@@ -34,7 +33,7 @@ const executiveMenu: MenuGroup[] = [
     title: "EXECUTIVE",
     items: [
       {
-        name: "Dashboard",
+        name: "Executive Dashboard",
         icon: LayoutDashboard,
         path: "/dashboard",
       },
@@ -49,28 +48,23 @@ const executiveMenu: MenuGroup[] = [
         path: "/credit",
       },
       {
-        name: "Treasury Intelligence",
-        icon: BarChart3,
-        path: "/treasury",
-      },
-      {
-        name: "Market Risk Intelligence",
-        icon: TrendingUp,
-        path: "/market-risk",
-      },
-      {
-        name: "Liquidity",
+        name: "Liquidity Intelligence",
         icon: Droplets,
         path: "#",
       },
       {
-        name: "Operational",
-        icon: Activity,
+        name: "Profitability Intelligence",
+        icon: DollarSign,
         path: "#",
       },
       {
-        name: "Climate",
-        icon: Leaf,
+        name: "Treasury & Market",
+        icon: BarChart3,
+        path: "/treasury",
+      },
+      {
+        name: "Operational Risk",
+        icon: Activity,
         path: "#",
       },
     ],
@@ -84,7 +78,7 @@ const executiveMenu: MenuGroup[] = [
         path: "/stress-testing",
       },
       {
-        name: "Reports",
+        name: "Executive Reports",
         icon: FileText,
         path: "#",
       },
