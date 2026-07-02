@@ -4,6 +4,7 @@ import PortfolioTrend from "../components/credit/PortfolioTrend";
 import SectorExposure from "../components/credit/SectorExposure";
 import WatchlistTable from "../components/credit/WatchlistTable";
 import AiCopilotPanel from "../components/credit/AiCopilotPanel";
+import ExecutiveBrief from "../components/credit/ExecutiveBrief";
 
 export default function CreditRisk() {
   return (
@@ -30,6 +31,10 @@ export default function CreditRisk() {
           </p>
 
         </section>
+
+        {/* Executive Brief */}
+
+        <ExecutiveBrief />
 
         {/* KPI */}
 
