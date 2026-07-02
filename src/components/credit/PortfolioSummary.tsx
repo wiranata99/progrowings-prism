@@ -16,7 +16,7 @@ export default function PortfolioSummary() {
 
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
 
         <MetricCard
           title="Total Portfolio"
@@ -40,6 +40,14 @@ export default function PortfolioSummary() {
           trend="-0.02%"
           target="< 1.00%"
           status="Healthy"
+        />
+
+        <MetricCard
+          title="Kolektibilitas 2"
+          value="6.84%"
+          trend="+0.24%"
+          target="< 8.00%"
+          status="Watch"
         />
 
         <MetricCard
