@@ -1,34 +1,25 @@
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
+
+const data = [
+  { month: "Jan", npl: 2.91 },
+  { month: "Feb", npl: 2.82 },
+  { month: "Mar", npl: 2.76 },
+  { month: "Apr", npl: 2.63 },
+  { month: "May", npl: 2.51 },
+  { month: "Jun", npl: 2.42 },
+];
+
 export default function PortfolioTrend() {
-  const values = [2.91, 2.82, 2.76, 2.63, 2.51, 2.42];
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
-
-  const max = Math.max(...values);
-  const min = Math.min(...values);
-
-  const chartWidth = 620;
-  const chartHeight = 170;
-
-  const points = values
-    .map((value, index) => {
-      const x = (index / (values.length - 1)) * chartWidth;
-      const y =
-        chartHeight -
-        ((value - min) / (max - min)) * (chartHeight - 25);
-
-      return `${x},${y}`;
-    })
-    .join(" ");
-
-  const area = `
-0,${chartHeight}
-${points}
-${chartWidth},${chartHeight}
-`;
-
   return (
     <div className="rounded-3xl border border-slate-800 bg-slate-900 p-7">
-
-      {/* Header */}
 
       <div className="flex items-start justify-between">
 
@@ -62,117 +53,77 @@ ${chartWidth},${chartHeight}
 
       </div>
 
-      {/* Chart */}
+      <div className="mt-8 h-[280px]">
 
-      <div className="mt-8">
+        <ResponsiveContainer width="100%" height="100%">
 
-        <svg
-          viewBox={`0 0 ${chartWidth} ${chartHeight + 20}`}
-          className="w-full"
-        >
-          <defs>
+          <AreaChart data={data}>
 
-            <linearGradient
-              id="trendFill"
-              x1="0"
-              y1="0"
-              x2="0"
-              y2="1"
-            >
-              <stop
-                offset="0%"
-                stopColor="#22D3EE"
-                stopOpacity="0.28"
-              />
+            <defs>
 
-              <stop
-                offset="100%"
-                stopColor="#22D3EE"
-                stopOpacity="0"
-              />
+              <linearGradient id="nplFill" x1="0" y1="0" x2="0" y2="1">
 
-            </linearGradient>
+                <stop
+                  offset="0%"
+                  stopColor="#22d3ee"
+                  stopOpacity={0.35}
+                />
 
-          </defs>
+                <stop
+                  offset="100%"
+                  stopColor="#22d3ee"
+                  stopOpacity={0}
+                />
 
-          {/* Horizontal Grid */}
+              </linearGradient>
 
-          {[20, 60, 100, 140].map((line) => (
-            <line
-              key={line}
-              x1="0"
-              x2={chartWidth}
-              y1={line}
-              y2={line}
+            </defs>
+
+            <CartesianGrid
               stroke="#263244"
               strokeDasharray="4 6"
             />
-          ))}
 
-          {/* Area */}
+            <XAxis
+              dataKey="month"
+              stroke="#94a3b8"
+            />
 
-          <polygon
-            points={area}
-            fill="url(#trendFill)"
-          />
+            <YAxis
+              domain={[2.3, 3]}
+              stroke="#94a3b8"
+            />
 
-          {/* Line */}
+            <Tooltip
+              formatter={(value) => [
+            `${Number(value).toFixed(2)}%`,
+            "Gross NPL Ratio",
+            ]}
+              contentStyle={{
+                background: "#0f172a",
+                border: "1px solid #334155",
+                borderRadius: "12px",
+                color: "#fff",
+              }}
 
-          <polyline
-            points={points}
-            fill="none"
-            stroke="#22D3EE"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
+              labelFormatter={(label) => `Periode : ${label}`}
+            />
 
-          {/* Dots */}
+            
 
-          {values.map((value, index) => {
-            const x =
-              (index / (values.length - 1)) *
-              chartWidth;
+            <Area
+              type="monotone"
+              dataKey="npl"
+              stroke="#22d3ee"
+              strokeWidth={3}
+              fill="url(#nplFill)"
+              dot={{ r: 5 }}
+              activeDot={{ r: 8 }}
+            />
 
-            const y =
-              chartHeight -
-              ((value - min) / (max - min)) *
-                (chartHeight - 25);
+          </AreaChart>
 
-            return (
-              <g key={index}>
-
-                <circle
-                  cx={x}
-                  cy={y}
-                  r="5"
-                  fill="#22D3EE"
-                />
-
-                <circle
-                  cx={x}
-                  cy={y}
-                  r="9"
-                  fill="#22D3EE22"
-                />
-
-              </g>
-            );
-          })}
-
-        </svg>
-
-      </div>
-
-      {/* Footer */}
-
-      <div className="mt-5 flex justify-between text-xs uppercase tracking-[0.18em] text-slate-500">
-
-        {months.map((month) => (
-          <span key={month}>
-            {month}
-          </span>
-        ))}
+        </ResponsiveContainer>
 
       </div>
 
