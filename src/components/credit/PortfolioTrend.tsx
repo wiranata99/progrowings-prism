@@ -1,3 +1,5 @@
+import { portfolioTrend } from "../../data/credit";
+
 import {
   ResponsiveContainer,
   AreaChart,
@@ -8,14 +10,6 @@ import {
   Tooltip,
 } from "recharts";
 
-const data = [
-  { month: "Jan", npl: 2.91 },
-  { month: "Feb", npl: 2.82 },
-  { month: "Mar", npl: 2.76 },
-  { month: "Apr", npl: 2.63 },
-  { month: "May", npl: 2.51 },
-  { month: "Jun", npl: 2.42 },
-];
 
 export default function PortfolioTrend() {
   return (
@@ -57,7 +51,7 @@ export default function PortfolioTrend() {
 
         <ResponsiveContainer width="100%" height="100%">
 
-          <AreaChart data={data}>
+          <AreaChart data={portfolioTrend}>
 
             <defs>
 

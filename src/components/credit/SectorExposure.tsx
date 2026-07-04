@@ -1,33 +1,4 @@
-const sectors = [
-  {
-    name: "Construction",
-    exposure: "Rp8.6 T",
-    percentage: 34,
-    npl: "3.48%",
-    status: "Watch",
-  },
-  {
-    name: "Trading",
-    exposure: "Rp7.1 T",
-    percentage: 28,
-    npl: "2.85%",
-    status: "Healthy",
-  },
-  {
-    name: "Manufacturing",
-    exposure: "Rp6.3 T",
-    percentage: 21,
-    npl: "1.92%",
-    status: "Healthy",
-  },
-  {
-    name: "Agriculture",
-    exposure: "Rp3.8 T",
-    percentage: 17,
-    npl: "0.95%",
-    status: "Healthy",
-  },
-];
+import { sectorExposure } from "../../data/credit";
 
 export default function SectorExposure() {
   return (
@@ -63,7 +34,7 @@ export default function SectorExposure() {
 
       <div className="mt-8 space-y-6">
 
-        {sectors.map((sector) => (
+        {sectorExposure.map((sector) => (
 
           <div key={sector.name}>
 

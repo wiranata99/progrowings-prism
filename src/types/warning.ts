@@ -8,3 +8,12 @@ export interface WarningData {
   impact: WarningPriority;
   action: string;
 }
+
+export interface WatchlistData {
+  priority: WarningPriority;
+  debtor: string;
+  exposure: string;
+  dpd: number;
+  coll: number;
+  action: string;
+}

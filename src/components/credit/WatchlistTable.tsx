@@ -1,35 +1,7 @@
-const watchlist = [
-  {
-    priority: "High",
-    debtor: "PT Nusantara Konstruksi",
-    exposure: "Rp1.28 T",
-    dpd: 97,
-    coll: 2,
-    action: "Review Required",
-  },
-  {
-    priority: "Medium",
-    debtor: "PT Maju Trading Indonesia",
-    exposure: "Rp845 B",
-    dpd: 18,
-    coll: 1,
-    action: "Enhanced Monitoring",
-  },
-  {
-    priority: "Medium",
-    debtor: "PT Agro Makmur",
-    exposure: "Rp610 B",
-    dpd: 7,
-    coll: 2,
-    action: "Collateral Update",
-  },
-];
+import { watchlist } from "../../data/credit";
+import { getPriorityBadge } from "../../utils/priorityColor";
 
-const priorityStyle = {
-  High: "bg-rose-500/15 text-rose-400",
-  Medium: "bg-amber-500/15 text-amber-400",
-  Low: "bg-emerald-500/15 text-emerald-400",
-};
+
 
 const dpdStyle = (dpd: number) => {
   if (dpd > 90)
@@ -141,9 +113,7 @@ export default function WatchlistTable() {
 
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      priorityStyle[
-                        item.priority as keyof typeof priorityStyle
-                      ]
+                      getPriorityBadge(item.priority)
                     }`}
                   >
                     {item.priority}

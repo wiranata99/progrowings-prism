@@ -1,25 +1,25 @@
 import MetricCard from "../cards/MetricCard";
-import { creditSummary } from "../../data/credit";
+import { operationalSummary } from "../../data/operational";
 
-export default function PortfolioSummary() {
+export default function OperationalExecutivePanel() {
   return (
     <div className="space-y-6">
 
       <div>
 
         <h2 className="text-2xl font-bold">
-          Portfolio Overview
+          Operational Risk Health Score
         </h2>
 
         <p className="mt-2 text-slate-400">
-          Executive summary of enterprise credit portfolio.
+          Executive summary of enterprise operational risk.
         </p>
 
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
 
-        {creditSummary.map((item) => (
+        {operationalSummary.map((item) => (
 
           <MetricCard
             key={item.title}
