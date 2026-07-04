@@ -1,8 +1,8 @@
 import Panel from "../ui/Panel";
-import { liquidityEarlyWarning } from "../../data/liquidity";
+import { profitabilityEarlyWarning } from "../../data/profitability";
 import { getPriorityBadge } from "../../utils/priorityColor";
 
-export default function LiquidityEarlyWarning() {
+export default function ProfitabilityEarlyWarning() {
   return (
     <Panel title="Early Warning">
 
@@ -12,7 +12,7 @@ export default function LiquidityEarlyWarning() {
 
           <thead>
 
-            <tr className="border-b border-slate-800 text-left text-xs uppercase tracking-[0.2em] text-slate-500">
+            <tr className="border-b border-slate-800 text-left text-xs uppercase tracking-[0.18em] text-slate-500">
 
               <th className="pb-4">Priority</th>
               <th className="pb-4">Indicator</th>
@@ -27,7 +27,7 @@ export default function LiquidityEarlyWarning() {
 
           <tbody>
 
-            {liquidityEarlyWarning.map((item) => (
+            {profitabilityEarlyWarning.map((item) => (
 
               <tr
                 key={item.indicator}
@@ -43,25 +43,35 @@ export default function LiquidityEarlyWarning() {
                 </td>
 
                 <td className="font-medium">
+
                   {item.indicator}
+
                 </td>
 
-                <td className="font-semibold">
+                <td>
+
                   {item.current}
+
                 </td>
 
                 <td>
+
                   {item.threshold}
+
                 </td>
 
                 <td>
+
                   {item.impact}
+
                 </td>
 
                 <td>
 
                   <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-400">
+
                     {item.action}
+
                   </span>
 
                 </td>

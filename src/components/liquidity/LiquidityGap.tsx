@@ -1,37 +1,7 @@
 import Panel from "../ui/Panel";
+import { liquidityGap } from "../../data/liquidity";
+import { getStatusBadge } from "../../utils/statusColor";
 
-const gaps = [
-  {
-    bucket: "Overnight",
-    gap: "+Rp2.35 T",
-    status: "Healthy",
-    color: "text-emerald-400",
-  },
-  {
-    bucket: "2 - 7 Days",
-    gap: "+Rp1.42 T",
-    status: "Healthy",
-    color: "text-emerald-400",
-  },
-  {
-    bucket: "8 - 30 Days",
-    gap: "-Rp0.68 T",
-    status: "Watch",
-    color: "text-amber-400",
-  },
-  {
-    bucket: "1 - 3 Months",
-    gap: "+Rp1.94 T",
-    status: "Healthy",
-    color: "text-emerald-400",
-  },
-  {
-    bucket: "> 3 Months",
-    gap: "+Rp5.83 T",
-    status: "Healthy",
-    color: "text-emerald-400",
-  },
-];
 
 export default function LiquidityGap() {
   return (
@@ -39,7 +9,7 @@ export default function LiquidityGap() {
 
       <div className="space-y-5">
 
-        {gaps.map((item) => (
+        {liquidityGap.map((item) => (
 
           <div
             key={item.bucket}
@@ -61,7 +31,7 @@ export default function LiquidityGap() {
               </div>
 
               <span
-                className={`rounded-full px-3 py-1 text-sm font-semibold ${item.color}`}
+                className={`rounded-full px-3 py-1 text-sm font-semibold ${getStatusBadge(item.status)}`}
               >
                 {item.status}
               </span>

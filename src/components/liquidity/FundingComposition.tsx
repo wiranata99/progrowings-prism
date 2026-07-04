@@ -1,29 +1,14 @@
 import Panel from "../ui/Panel";
+import { fundingComposition } from "../../data/liquidity";
+import { getFundingColor } from "../../utils/fundingColor";
 
-const funding = [
-  {
-    name: "Current Account",
-    value: 14,
-    amount: "Rp8.5 T",
-    color: "bg-cyan-500",
-  },
-  {
-    name: "Saving Account",
-    value: 28,
-    amount: "Rp16.9 T",
-    color: "bg-sky-500",
-  },
-  {
-    name: "Time Deposit",
-    value: 58,
-    amount: "Rp35.1 T",
-    color: "bg-amber-400",
-  },
-];
+
 
 export default function FundingComposition() {
 
-  const casa = funding[0].value + funding[1].value;
+  const casa =
+  fundingComposition[0].value +
+  fundingComposition[1].value;
 
   return (
 
@@ -55,17 +40,17 @@ export default function FundingComposition() {
 
               <div
                 className="bg-cyan-500"
-                style={{ width: `${funding[0].value}%` }}
+                style={{ width: `${fundingComposition[0].value}%` }}
               />
 
               <div
                 className="bg-sky-500"
-                style={{ width: `${funding[1].value}%` }}
+                style={{ width: `${fundingComposition[1].value}%` }}
               />
 
               <div
                 className="bg-amber-400"
-                style={{ width: `${funding[2].value}%` }}
+                style={{ width: `${fundingComposition[2].value}%` }}
               />
 
             </div>
@@ -76,7 +61,7 @@ export default function FundingComposition() {
 
         <div className="space-y-5">
 
-          {funding.map((item) => (
+          {fundingComposition.map((item) => (
 
             <div
               key={item.name}
@@ -88,7 +73,7 @@ export default function FundingComposition() {
                 <div className="flex items-center gap-3">
 
                   <div
-                    className={`h-3 w-3 rounded-full ${item.color}`}
+                    className={`h-3 w-3 rounded-full ${getFundingColor(item.name)}`}
                   />
 
                   <span className="font-medium">

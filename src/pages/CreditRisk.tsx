@@ -5,6 +5,7 @@ import SectorExposure from "../components/credit/SectorExposure";
 import WatchlistTable from "../components/credit/WatchlistTable";
 import AiCopilotPanel from "../components/credit/AiCopilotPanel";
 import ExecutiveBrief from "../components/credit/ExecutiveBrief";
+import SectionHeader from "../components/common/SectionHeader";
 
 export default function CreditRisk() {
   return (
@@ -13,24 +14,12 @@ export default function CreditRisk() {
 
         {/* Header */}
 
-        <section>
-
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-400">
-            Credit Intelligence
-          </p>
-
-          <h1 className="mt-2 text-4xl font-bold">
-            Enterprise Credit Risk
-          </h1>
-
-          <p className="mt-3 max-w-4xl text-slate-400 leading-7">
-            Comprehensive monitoring of portfolio quality,
-            credit concentration, impairment,
-            early warning indicators,
-            and executive decision support.
-          </p>
-
-        </section>
+        <SectionHeader
+  eyebrow="Credit Intelligence"
+  title="Enterprise Credit Risk"
+  description="Comprehensive monitoring of portfolio quality, credit concentration, impairment, early warning indicators, and executive decision support."
+  badge="Live Monitoring"
+/>
 
         {/* Executive Brief */}
 

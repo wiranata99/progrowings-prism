@@ -55,7 +55,7 @@ const executiveMenu: MenuGroup[] = [
       {
         name: "Profitability Intelligence",
         icon: DollarSign,
-        path: "#",
+        path: "/profitability",
       },
       {
         name: "Treasury & Market",

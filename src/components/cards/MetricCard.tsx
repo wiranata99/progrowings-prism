@@ -1,9 +1,22 @@
+import type { MetricStatus } from "../../types/metric";
+
+import ProgressBar from "../common/ProgressBar";
+
+import {
+  getStatusBadge,
+  getStatusDot,
+} from "../../utils/statusColor";
+
+import {
+  getHealthScore,
+} from "../../utils/healthScore";
+
 interface MetricCardProps {
   title: string;
   value: string;
   trend?: string;
   target?: string;
-  status?: "Healthy" | "Watch" | "Critical";
+  status?: MetricStatus;
 }
 
 export default function MetricCard({
@@ -13,21 +26,6 @@ export default function MetricCard({
   target,
   status = "Healthy",
 }: MetricCardProps) {
-  const statusStyle = {
-    Healthy: {
-      badge: "bg-emerald-500/15 text-emerald-400",
-      dot: "bg-emerald-400",
-    },
-    Watch: {
-      badge: "bg-amber-500/15 text-amber-400",
-      dot: "bg-amber-400",
-    },
-    Critical: {
-      badge: "bg-rose-500/15 text-rose-400",
-      dot: "bg-rose-400",
-    },
-  };
-
   return (
     <div className="group rounded-3xl border border-slate-800 bg-slate-900 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500/40 hover:shadow-2xl hover:shadow-cyan-500/10">
 
@@ -38,7 +36,7 @@ export default function MetricCard({
         <div className="flex items-center gap-3">
 
           <div
-            className={`h-2.5 w-2.5 rounded-full ${statusStyle[status].dot}`}
+            className={`h-2.5 w-2.5 rounded-full ${getStatusDot(status)}`}
           />
 
           <p className="text-sm font-medium tracking-wide text-slate-400">
@@ -48,7 +46,7 @@ export default function MetricCard({
         </div>
 
         <span
-          className={`rounded-full px-3 py-1 text-xs font-semibold ${statusStyle[status].badge}`}
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusBadge(status)}`}
         >
           {status}
         </span>
@@ -62,6 +60,10 @@ export default function MetricCard({
         <h2 className="text-5xl font-bold tracking-tight text-white">
           {value}
         </h2>
+
+        <ProgressBar
+          value={getHealthScore(status)}
+        />
 
       </div>
 

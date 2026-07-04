@@ -1,18 +1,10 @@
 import Panel from "../ui/Panel";
+import { liquidityTrend } from "../../data/liquidity";
 
-const data = [
-  { day: "D-30", value: 138 },
-  { day: "D-25", value: 142 },
-  { day: "D-20", value: 147 },
-  { day: "D-15", value: 145 },
-  { day: "D-10", value: 149 },
-  { day: "D-5", value: 151 },
-  { day: "Today", value: 152 },
-];
 
 export default function LiquidityTrend() {
 
-  const max = 160;
+  const max = Math.max(...liquidityTrend.map((d) => d.value)) + 10;
 
   return (
 
@@ -20,7 +12,7 @@ export default function LiquidityTrend() {
 
       <div className="flex h-80 items-end gap-5">
 
-        {data.map((item) => (
+        {liquidityTrend.map((item) => (
 
           <div
             key={item.day}
