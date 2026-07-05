@@ -6,6 +6,7 @@ import Profitability from "../pages/Profitability";
 import Treasury from "../pages/Treasury";
 import MarketRisk from "../pages/MarketRisk";
 import StressTesting from "../pages/StressTesting";
+import Operational from "../pages/Operational";
 
 
 export default function AppRouter() {
@@ -46,6 +47,11 @@ export default function AppRouter() {
         path="/market-risk"
         element={<MarketRisk />}
       />
+
+      <Route
+        path="/operational"
+        element={<Operational />}
+        />
 
       <Route
         path="/stress-testing"

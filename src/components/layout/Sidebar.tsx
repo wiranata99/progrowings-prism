@@ -58,14 +58,14 @@ const executiveMenu: MenuGroup[] = [
         path: "/profitability",
       },
       {
-        name: "Treasury & Market",
+        name: "Treasury & Market Intelligence",
         icon: BarChart3,
         path: "/treasury",
       },
       {
-        name: "Operational Risk",
+        name: "Operational Intelligence",
         icon: Activity,
-        path: "#",
+        path: "/operational",
       },
     ],
   },
