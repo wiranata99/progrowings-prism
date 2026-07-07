@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 interface ExecutiveScoreProps {
   score: number;
   status: string;
@@ -5,33 +7,33 @@ interface ExecutiveScoreProps {
 
 const domains = [
   {
-    name: "Credit",
+    nameKey: "common.credit",
     score: 94,
-    status: "Excellent",
+    statusKey: "common.excellent",
     color: "emerald",
   },
   {
-    name: "Market",
+    nameKey: "common.market",
     score: 91,
-    status: "Healthy",
+    statusKey: "common.healthy",
     color: "cyan",
   },
   {
-    name: "Liquidity",
+    nameKey: "common.liquidity",
     score: 97,
-    status: "Strong",
+    statusKey: "common.strong",
     color: "emerald",
   },
   {
-    name: "Operational",
+    nameKey: "common.operational",
     score: 89,
-    status: "Healthy",
+    statusKey: "common.healthy",
     color: "amber",
   },
   {
-    name: "Climate",
+    nameKey: "common.profitability",
     score: 86,
-    status: "Watch",
+    statusKey: "common.watch",
     color: "amber",
   },
 ];
@@ -52,6 +54,9 @@ export default function ExecutiveScore({
   score,
   status,
 }: ExecutiveScoreProps) {
+
+  const { t } = useTranslation();
+
   return (
     <div className="rounded-3xl border border-cyan-500/20 bg-[#101827] p-4 shadow-2xl sm:p-6 lg:p-10">
 
@@ -62,11 +67,11 @@ export default function ExecutiveScore({
         <div>
 
           <p className="text-xs font-semibold uppercase tracking-[0.30em] text-cyan-400">
-            Executive Command Center
+            {t("common.executiveCommandCenter")}
           </p>
 
           <h2 className="mt-3 text-2xl font-bold sm:text-3xl lg:text-4xl">
-            Enterprise Risk Score
+            {t("common.enterpriseRiskScore")}
           </h2>
 
         </div>
@@ -88,11 +93,11 @@ export default function ExecutiveScore({
         <div className="mb-0 sm:mb-3">
 
           <p className="text-sm text-slate-400">
-            Overall Enterprise Health
+            {t("common.overallEnterpriseHealth")}
           </p>
 
           <p className="mt-1 text-lg font-semibold text-cyan-400">
-            Within Risk Appetite
+            {t("common.withinLimit")}
           </p>
 
         </div>
@@ -119,11 +124,11 @@ export default function ExecutiveScore({
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
 
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-            Enterprise Risk Domains
+            {t("common.enterpriseRiskDomains")}
           </p>
 
           <p className="text-xs text-slate-500">
-            Current Assessment
+            {t("common.currentAssessment")}
           </p>
 
         </div>
@@ -133,12 +138,12 @@ export default function ExecutiveScore({
           {domains.map((domain) => (
 
             <button
-              key={domain.name}
+              key={t(domain.nameKey)}
               className="rounded-2xl border border-slate-800 bg-slate-900 p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500/40 hover:shadow-lg hover:shadow-cyan-500/10"
             >
 
               <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
-                {domain.name}
+                {t(domain.nameKey)}
               </p>
 
               <div className="mt-4 flex items-center justify-between gap-3">
@@ -152,7 +157,7 @@ export default function ExecutiveScore({
                     badgeClass[domain.color as keyof typeof badgeClass]
                   }`}
                 >
-                  {domain.status}
+                  {t(domain.statusKey)}
                 </span>
 
               </div>

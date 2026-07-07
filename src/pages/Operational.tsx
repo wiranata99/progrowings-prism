@@ -4,9 +4,14 @@ import OperationalExecutivePanel from "../components/operational/OperationalExec
 import OperationalLossTrend from "../components/operational/OperationalLossTrend";
 import RiskHeatmap from "../components/operational/RiskHeatmap";
 import KRIMonitoring from "../components/operational/KRIMonitoring";
+import ControlEffectiveness from "../components/operational/ControlEffectiveness";
+import TopOperationalIssues from "../components/operational/TopOperationalIssues";
+import AIExecutiveInsight from "../components/operational/AIExecutiveInsight";
+import { useTranslation } from "react-i18next";
 
 export default function Operational() {
-  return (
+const { t } = useTranslation();
+    return (
     <AppLayout>
 
       <div className="space-y-8">
@@ -14,8 +19,8 @@ export default function Operational() {
         <SectionHeader
         
           eyebrow="Operational Intelligence"
-          title="Enterprise Operational Risk"
-          description="Comprehensive monitoring of operational risk, loss events, control effectiveness, key risk indicators, and executive decision support."
+          title={t("operational.title")}
+          description={t("operational.subtitle")}
           badge="Month To Date"
         />
 
@@ -25,7 +30,13 @@ export default function Operational() {
 
         <RiskHeatmap />
 
+        <ControlEffectiveness />
+
+        <TopOperationalIssues />
+
         <KRIMonitoring />
+
+        <AIExecutiveInsight />
 
       </div>
 

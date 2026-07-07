@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import {
   Bell,
   CalendarDays,
@@ -15,6 +17,7 @@ export default function Header({
   onOpenSidebar,
 }: HeaderProps) {
   const now = new Date();
+  const { i18n } = useTranslation();
 
   const date = now.toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -69,9 +72,35 @@ export default function Header({
             <Search size={18} />
           </button>
 
-          <button className="rounded-2xl bg-slate-800 p-3 transition hover:bg-slate-700">
-            <Globe size={18} />
-          </button>
+          <div className="flex items-center rounded-2xl bg-slate-800 p-1">
+
+  <button
+    onClick={() => i18n.changeLanguage("id")}
+    className={`rounded-xl px-3 py-2 text-xs font-semibold transition ${
+      i18n.language === "id"
+        ? "bg-cyan-500 text-slate-950"
+        : "text-slate-300 hover:text-white"
+    }`}
+  >
+    INA
+  </button>
+
+  <button
+    onClick={() => i18n.changeLanguage("en")}
+    className={`rounded-xl px-3 py-2 text-xs font-semibold transition ${
+      i18n.language === "en"
+        ? "bg-cyan-500 text-slate-950"
+        : "text-slate-300 hover:text-white"
+    }`}
+  >
+    ENG
+  </button>
+
+  <button className="ml-1 rounded-xl p-2 hover:bg-slate-700">
+    <Globe size={18} />
+  </button>
+
+</div>
 
           <button className="rounded-2xl bg-slate-800 p-3 transition hover:bg-slate-700">
             <Bell size={18} />

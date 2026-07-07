@@ -3,6 +3,7 @@ import ExecutiveScore from "../components/dashboard/ExecutiveScore";
 import TrendChart from "../components/dashboard/TrendChart";
 import Panel from "../components/ui/Panel";
 import StatusBadge from "../components/ui/StatusBadge";
+import { useTranslation } from "react-i18next";
 
 const market = [
   ["USD/IDR", "17,180"],
@@ -14,25 +15,26 @@ const market = [
 const alerts = [
   {
     level: "HIGH",
-    title: "Recovery Plan Trigger",
-    desc: "NPL monitoring threshold remains active.",
+    titleKey: "dashboard.recoveryPlan",
+    descKey: "dashboard.recoveryPlanDesc",
     color: "text-rose-400",
   },
   {
     level: "MEDIUM",
-    title: "USD Volatility",
-    desc: "Monitor FX borrowers with USD exposure.",
+    titleKey: "dashboard.usdVolatility",
+    descKey: "dashboard.usdVolatilityDesc",
     color: "text-amber-400",
   },
   {
     level: "LOW",
-    title: "Liquidity Position",
-    desc: "LCR remains comfortably above regulatory minimum.",
+    titleKey: "dashboard.liquidityPosition",
+    descKey: "dashboard.liquidityPositionDesc",
     color: "text-emerald-400",
   },
 ];
 
 export function Dashboard() {
+  const { t } = useTranslation();
   return (
     <AppLayout>
 
@@ -56,11 +58,11 @@ export function Dashboard() {
             <div>
 
               <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-400">
-                AI Executive Copilot
+                {t("dashboard.executiveCopilot")}
               </p>
 
               <h2 className="mt-2 text-2xl font-bold">
-                Today's Executive Brief
+                {t("dashboard.executiveBrief")}
               </h2>
 
             </div>
@@ -77,7 +79,7 @@ export function Dashboard() {
             {alerts.map((item) => (
 
               <div
-                key={item.title}
+                key={t(item.titleKey)}
                 className="border-l-2 border-slate-700 pl-4"
               >
 
@@ -89,13 +91,13 @@ export function Dashboard() {
 
                 <h3 className="mt-2 font-semibold">
 
-                  {item.title}
+                  {t(item.titleKey)}
 
                 </h3>
 
                 <p className="mt-1 text-sm leading-6 text-slate-400">
 
-                  {item.desc}
+                  {t(item.descKey)}
 
                 </p>
 
@@ -114,7 +116,7 @@ export function Dashboard() {
       <div className="mt-6 grid gap-6 lg:grid-cols-12">
 
         <Panel
-          title="Market Monitor"
+          title={t("dashboard.marketMonitor")}
           className="lg:col-span-8"
         >
 
@@ -148,7 +150,7 @@ export function Dashboard() {
         </Panel>
 
         <Panel
-          title="Market Trend"
+          title={t("dashboard.marketTrend")}
           className="lg:col-span-4"
         >
 
