@@ -19,8 +19,8 @@ const { t } = useTranslation();
         <SectionHeader
         
           eyebrow="Operational Intelligence"
-          title={t("operational.title")}
-          description={t("operational.subtitle")}
+          title="Operational Intelligence"
+          description="Enterprise Operational Risk Monitoring and Intelligence"
           badge="Month To Date"
         />
 
