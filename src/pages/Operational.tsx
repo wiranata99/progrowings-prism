@@ -7,10 +7,10 @@ import KRIMonitoring from "../components/operational/KRIMonitoring";
 import ControlEffectiveness from "../components/operational/ControlEffectiveness";
 import TopOperationalIssues from "../components/operational/TopOperationalIssues";
 import AIExecutiveInsight from "../components/operational/AIExecutiveInsight";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
 export default function Operational() {
-const { t } = useTranslation();
+// const { t } = useTranslation();
     return (
     <AppLayout>
 
