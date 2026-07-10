@@ -1,4 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 export default function AiCopilotPanel() {
+    const { t } = useTranslation();
   return (
     <div className="rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-7">
 
@@ -9,11 +12,11 @@ export default function AiCopilotPanel() {
         <div>
 
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-400">
-            Executive Intelligence
+            {t("common.executiveIntelligence")}
           </p>
 
           <h2 className="mt-2 text-2xl font-bold">
-            Credit Risk Brief
+            {t("common.creditRiskBrief")}
           </h2>
 
         </div>
@@ -63,7 +66,7 @@ export default function AiCopilotPanel() {
       <section className="mt-8 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5">
 
         <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-400">
-          Management Attention
+          {t("common.managementAttention")}
         </h3>
 
         <ul className="mt-4 space-y-3 text-slate-300">
@@ -83,7 +86,7 @@ export default function AiCopilotPanel() {
       <section className="mt-8">
 
         <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-400">
-          Recommended Actions
+          {t("common.recommendedActions")}
         </h3>
 
         <ul className="mt-4 space-y-3 text-slate-300">
@@ -107,17 +110,17 @@ export default function AiCopilotPanel() {
           <div>
 
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-400">
-              Overall Assessment
+              {t("common.overallAssessment")}
             </p>
 
             <h3 className="mt-2 text-xl font-bold text-white">
-              Portfolio Remains Healthy
+              {t("common.portfolioRemainsHealthy")}
             </h3>
 
           </div>
 
           <div className="rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-400">
-            Confidence 96%
+            {t("common.confidence")} 96%
           </div>
 
         </div>

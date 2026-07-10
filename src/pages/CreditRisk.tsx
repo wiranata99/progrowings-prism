@@ -1,52 +1,48 @@
 import AppLayout from "../components/layout/AppLayout";
-import PortfolioSummary from "../components/credit/PortfolioSummary";
-import PortfolioTrend from "../components/credit/PortfolioTrend";
-import SectorExposure from "../components/credit/SectorExposure";
-import WatchlistTable from "../components/credit/WatchlistTable";
-import AiCopilotPanel from "../components/credit/AiCopilotPanel";
-import ExecutiveBrief from "../components/credit/ExecutiveBrief";
 import SectionHeader from "../components/common/SectionHeader";
+
+// Hero
+import ExecutiveNarrative from "../components/credit/ExecutiveNarrative";
+import StrategicIntelligence from "../components/credit/StrategicIntelligence";
+import PrismScorecard from "../components/prism/PrismScorecard";
+
+// Executive Overview
+import PortfolioSummary from "../components/credit/PortfolioSummary";
+// import RiskAppetitePanel from "../components/credit/RiskAppetitePanel";
+
+// Analytics
+import PortfolioMomentum from "../components/credit/PortfolioMomentum";
+import SectorExposure from "../components/credit/SectorExposure";
+
+// Monitoring
+import WatchlistTable from "../components/credit/WatchlistTable";
 
 export default function CreditRisk() {
   return (
     <AppLayout>
       <div className="space-y-8">
-
-        {/* Header */}
-
         <SectionHeader
-  eyebrow="Credit Intelligence"
-  title="Enterprise Credit Risk"
-  description="Comprehensive monitoring of portfolio quality, credit concentration, impairment, early warning indicators, and executive decision support."
-  badge="Live Monitoring"
-/>
+          eyebrow="Credit Intelligence"
+          title="Enterprise Credit Intelligence"
+          description="Executive intelligence workspace for monitoring portfolio quality, identifying emerging risks, and supporting strategic credit decisions."
+          badge="Live Monitoring"
+        />
 
-        {/* Executive Brief */}
+        <ExecutiveNarrative />
 
-        <ExecutiveBrief />
-
-        {/* KPI */}
+        <PrismScorecard />
 
         <PortfolioSummary />
 
-        {/* Trend */}
+        <StrategicIntelligence />
 
-        <PortfolioTrend />
+        {/* <RiskAppetitePanel /> */}
 
-        {/* Middle */}
+        <PortfolioMomentum />
 
-        <div className="grid gap-6 xl:grid-cols-2">
-
-          <SectorExposure />
-
-          <AiCopilotPanel />
-
-        </div>
-
-        {/* Watchlist */}
+        <SectorExposure />
 
         <WatchlistTable />
-
       </div>
     </AppLayout>
   );

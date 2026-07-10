@@ -53,14 +53,16 @@ const executiveMenu: MenuGroup[] = [
         path: "/liquidity",
       },
       {
-        name: "Profitability Intelligence",
-        icon: DollarSign,
-        path: "/profitability",
-      },
-      {
         name: "Treasury & Market Intelligence",
         icon: BarChart3,
         path: "/treasury",
+        
+      },
+      {
+        name: "Profitability Intelligence",
+        icon: DollarSign,
+        path: "/profitability",
+        
       },
       {
         name: "Operational Intelligence",

@@ -1,4 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 export default function ExecutiveBrief() {
+    const { t } = useTranslation();
   return (
     <section className="rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-7">
 
@@ -7,17 +10,17 @@ export default function ExecutiveBrief() {
         <div>
 
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-            Executive Credit Brief
+            {t("common.creditexecutiveBrief")}
           </p>
 
           <h2 className="mt-2 text-2xl font-bold text-white">
-            Kondisi Portofolio Kredit
+            {t("common.creditportfolioCondition")}                
           </h2>
 
         </div>
 
         <span className="rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-400">
-          Healthy
+          {t("common.healthy")}
         </span>
 
       </div>
@@ -25,33 +28,26 @@ export default function ExecutiveBrief() {
       <div className="mt-6 space-y-4 leading-8 text-slate-300">
 
         <p>
-          Portofolio kredit secara umum masih berada dalam
+          {t("common.creditsummary1")}
           <span className="font-semibold text-white">
-            {" "}Risk Appetite Bank.
+            
           </span>
         </p>
 
         <p>
-          Gross NPL menurun menjadi
+          {t("common.creditsummary2")}
           <span className="font-semibold text-cyan-400">
-            {" "}2.42%
+            
           </span>
-          {" "}dibanding bulan sebelumnya sebesar
-          <span className="font-semibold text-white">
-            {" "}2.51%.
-          </span>
+          
         </p>
 
         <p>
-          Peningkatan eksposur debitur pada
+          {t("common.creditsummary3")}
           <span className="font-semibold text-amber-400">
-            {" "}Kolektibilitas 2
+            
           </span>
-          {" "}di sektor Konstruksi memerlukan perhatian untuk mencegah
-          migrasi menuju
-          <span className="font-semibold text-rose-400">
-            {" "}Kolektibilitas 3.
-          </span>
+          
         </p>
 
       </div>
@@ -64,11 +60,11 @@ export default function ExecutiveBrief() {
 
         <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-300">
 
-          <li>✓ Intensifkan monitoring sektor Konstruksi.</li>
+          <li>✓ {t("common.creditaction1")} </li>
 
-          <li>✓ Review Top 10 debitur Kolektibilitas 2.</li>
+          <li>✓ {t("common.creditaction2")} </li>
 
-          <li>✓ Pertahankan strategi recovery Consumer Loan.</li>
+          <li>✓ {t("common.creditaction3")} </li>
 
         </ul>
 

@@ -5,28 +5,63 @@ import Panel from "../components/ui/Panel";
 import StatusBadge from "../components/ui/StatusBadge";
 import { useTranslation } from "react-i18next";
 
-const market = [
-  ["USD/IDR", "17,180"],
-  ["BI Rate", "5.50%"],
-  ["SRBI 12M", "6.42%"],
-  ["US 10Y", "4.36%"],
+interface MarketIndicator {
+  id: string;
+  labelKey: string;
+  value: number;
+  suffix: string;
+  format: "number" | "decimal";
+}
+
+const market: MarketIndicator[] = [
+  {
+    id: "usdidr",
+    labelKey: "dashboard.usdidr",
+    value: 17180,
+    suffix: "",
+    format: "number",
+  },
+  {
+    id: "birate",
+    labelKey: "dashboard.biRate",
+    value: 5.5,
+    suffix: "%",
+    format: "decimal",
+  },
+  {
+    id: "srbi12m",
+    labelKey: "dashboard.srbi12m",
+    value: 6.42,
+    suffix: "%",
+    format: "decimal",
+  },
+  {
+    id: "us10y",
+    labelKey: "dashboard.us10y",
+    value: 4.36,
+    suffix: "%",
+    format: "decimal",
+  },
 ];
 
 const alerts = [
   {
-    level: "HIGH",
+    id: "recovery",
+    levelKey: "common.high",
     titleKey: "dashboard.recoveryPlan",
     descKey: "dashboard.recoveryPlanDesc",
     color: "text-rose-400",
   },
   {
-    level: "MEDIUM",
+    id: "usd",
+    levelKey: "common.moderate",
     titleKey: "dashboard.usdVolatility",
     descKey: "dashboard.usdVolatilityDesc",
     color: "text-amber-400",
   },
   {
-    level: "LOW",
+    id: "liquidity",
+    levelKey: "common.low",
     titleKey: "dashboard.liquidityPosition",
     descKey: "dashboard.liquidityPositionDesc",
     color: "text-emerald-400",
@@ -35,6 +70,13 @@ const alerts = [
 
 export function Dashboard() {
   const { t } = useTranslation();
+  const formatValue = (item: MarketIndicator) => {
+  if (item.format === "number") {
+    return item.value.toLocaleString("en-US");
+  }
+
+  return item.value.toFixed(2);
+};
   return (
     <AppLayout>
 
@@ -47,6 +89,7 @@ export function Dashboard() {
           <ExecutiveScore
             score={92}
             status="Healthy Institution"
+            delta={2.4}
           />
 
         </div>
@@ -79,13 +122,13 @@ export function Dashboard() {
             {alerts.map((item) => (
 
               <div
-                key={t(item.titleKey)}
+                key={item.id}
                 className="border-l-2 border-slate-700 pl-4"
               >
 
                 <p className={`text-xs font-bold ${item.color}`}>
 
-                  {item.level}
+                  {t(item.levelKey)}
 
                 </p>
 
@@ -122,22 +165,23 @@ export function Dashboard() {
 
           <div className="grid grid-cols-2 gap-5">
 
-            {market.map(([name, value]) => (
+            {market.map((item) => (
 
               <div
-                key={name}
+                key={item.id}
                 className="rounded-2xl border border-slate-700 bg-slate-900 p-5 transition-all duration-300 hover:border-cyan-500/30"
               >
 
                 <p className="text-sm text-slate-400">
 
-                  {name}
+                  {t(item.labelKey)}
 
                 </p>
 
                 <h3 className="mt-2 text-3xl font-bold">
 
-                  {value}
+                  {formatValue(item)}
+{item.suffix}
 
                 </h3>
 

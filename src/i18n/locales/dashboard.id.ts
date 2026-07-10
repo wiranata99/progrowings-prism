@@ -22,8 +22,14 @@ const dashboard = {
   usdVolatilityDesc:
     "Pantau debitur dengan eksposur USD.",
 
-  liquidityPositionDesc:
-    "LCR tetap berada di atas ketentuan regulator.",
+    liquidityPositionDesc: "LCR tetap berada di atas batas minimum regulator.",
+
+    aiExecutiveCopilot: "AI Executive Copilot",
+
+    usdidr: "USD/IDR",
+biRate: "BI Rate",
+srbi12m: "SRBI 12M",
+us10y: "US 10Y",
 };
 
 export default dashboard;

@@ -20,6 +20,14 @@ const dashboard = {
 
   liquidityPositionDesc:
     "LCR remains comfortably above regulatory minimum.",
+
+    aiExecutiveCopilot: "AI Executive Copilot",
+
+    usdidr: "USD/IDR",
+biRate: "BI Rate",
+srbi12m: "SRBI 12M",
+us10y: "US 10Y",
+   
 };
 
 export default dashboard;

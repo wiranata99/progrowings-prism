@@ -17,7 +17,7 @@ export default function Header({
   onOpenSidebar,
 }: HeaderProps) {
   const now = new Date();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const date = now.toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -51,7 +51,7 @@ export default function Header({
           <div>
 
             <p className="text-[10px] font-semibold uppercase tracking-[0.30em] text-cyan-400 sm:text-xs">
-              Executive Command Center
+              {t("common.executiveCommandCenter")}
             </p>
 
             <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl xl:text-4xl">
@@ -59,7 +59,7 @@ export default function Header({
             </h1>
 
             <p className="mt-2 text-sm text-slate-400 sm:text-base">
-              Enterprise Risk Intelligence Platform
+              {t("common.platformTitle")}
             </p>
 
           </div>
@@ -120,7 +120,7 @@ export default function Header({
           <div className="flex items-center gap-2 text-cyan-400">
             <CalendarDays size={16} />
             <span className="text-xs uppercase tracking-wider">
-              Reporting Date
+              {t("common.reportingDate")}
             </span>
           </div>
 
@@ -133,7 +133,7 @@ export default function Header({
           <div className="flex items-center gap-2 text-cyan-400">
             <Clock3 size={16} />
             <span className="text-xs uppercase tracking-wider">
-              Last Refresh
+              {t("common.lastRefresh")}
             </span>
           </div>
 
@@ -144,7 +144,7 @@ export default function Header({
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
           <p className="text-xs uppercase tracking-wider text-cyan-400">
-            Portfolio
+            {t("common.portfolio")}
           </p>
 
           <p className="mt-2 text-lg font-semibold">
@@ -154,11 +154,11 @@ export default function Header({
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
           <p className="text-xs uppercase tracking-wider text-cyan-400">
-            Risk Appetite
+            {t("common.riskAppetite")}
           </p>
 
           <p className="mt-2 text-lg font-semibold text-emerald-400">
-            Within Limit
+            {t("common.withinLimit")}
           </p>
         </div>
 

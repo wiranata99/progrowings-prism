@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 interface ExecutiveScoreProps {
   score: number;
   status: string;
+  delta: number;
 }
 
 const domains = [
@@ -53,6 +54,7 @@ const badgeClass = {
 export default function ExecutiveScore({
   score,
   status,
+  delta,
 }: ExecutiveScoreProps) {
 
   const { t } = useTranslation();
@@ -98,9 +100,20 @@ export default function ExecutiveScore({
 
           <p className="mt-1 text-lg font-semibold text-cyan-400">
             {t("common.withinLimit")}
+                      
           </p>
+        
+        <div className="mt-4 inline-flex items-center rounded-full bg-emerald-500/10 px-3 py-1">
+         <span className="text-sm font-semibold text-emerald-400">
+          ▲ +{delta.toFixed(1)} pts
+         </span>
 
+         <span className="ml-2 text-xs text-slate-400">
+         {t("common.vsPreviousMonth")}
+         </span>
         </div>
+        </div>
+    
 
       </div>
 
@@ -138,7 +151,7 @@ export default function ExecutiveScore({
           {domains.map((domain) => (
 
             <button
-              key={t(domain.nameKey)}
+              key={domain.nameKey}
               className="rounded-2xl border border-slate-800 bg-slate-900 p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500/40 hover:shadow-lg hover:shadow-cyan-500/10"
             >
 
