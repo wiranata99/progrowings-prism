@@ -19,7 +19,7 @@ export default function LiquidityExecutivePanel() {
         </div>
 
         <div className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-400">
-          Generated 08:00 WIB
+          As of {new Date().toLocaleDateString("en-GB")} | 08:00 WIB
         </div>
 
       </div>
@@ -122,9 +122,21 @@ export default function LiquidityExecutivePanel() {
 
           </div>
 
-          <div className="rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-400">
-            Confidence 97%
-          </div>
+          <div className="flex gap-3">
+
+  <div className="rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-400">
+    Risk Level: LOW
+  </div>
+
+  <div className="rounded-full bg-cyan-500/15 px-4 py-2 text-sm font-semibold text-cyan-300">
+    Funding: STABLE
+  </div>
+
+  <div className="rounded-full bg-violet-500/15 px-4 py-2 text-sm font-semibold text-violet-300">
+    Confidence 97%
+  </div>
+
+</div>
 
         </div>
 

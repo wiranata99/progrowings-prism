@@ -113,6 +113,39 @@ export default function LiquidityTrend() {
         />
 
       </div>
+      <div className="mt-6 flex items-center justify-between">
+
+  <div className="flex items-center gap-8">
+
+    <div className="flex items-center gap-2">
+
+      <span className="h-3 w-3 rounded-full bg-cyan-400"/>
+
+      <span className="text-sm text-slate-300">
+        LCR
+      </span>
+
+    </div>
+
+    <div className="flex items-center gap-2">
+
+      <span className="h-0.5 w-8 border-t-2 border-dashed border-red-400"/>
+
+      <span className="text-sm text-slate-300">
+        Regulatory Minimum (100%)
+      </span>
+
+    </div>
+
+  </div>
+
+  <span className="text-sm text-slate-500">
+
+    Last {period} Days
+
+  </span>
+
+</div>
             <div className="mt-8 h-[460px]">
 
         <ResponsiveContainer
