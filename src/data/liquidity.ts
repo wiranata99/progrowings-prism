@@ -73,7 +73,7 @@ export interface LiquidityTrendData {
 }
 
 export const liquidityTrend = [
-   { day: "D-29", value: 145 },
+  { day: "D-29", value: 145 },
   { day: "D-28", value: 146 },
   { day: "D-27", value: 145 },
   { day: "D-26", value: 147 },

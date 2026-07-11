@@ -5,8 +5,10 @@ import TreasurySummary from "../components/treasury/TreasurySummary";
 import TreasuryPerformanceTrend from "../components/treasury/TreasuryPerformanceTrend";
 import PortfolioComposition from "../components/treasury/PortfolioComposition";
 import DurationAnalysis from "../components/treasury/DurationAnalysis";
-import MarketOutlook from "../components/treasury/MarketOutlook";
+// import MarketOutlook from "../components/treasury/MarketOutlook";
 import TreasuryEarlyWarning from "../components/treasury/TreasuryEarlyWarning";
+import StrategicIntelligence from "../components/treasury/StrategicIntelligence";
+import MarketRiskDashboard from "../components/treasury/MarketRiskDashboard";
 
 export default function Treasury() {
   return (
@@ -23,6 +25,8 @@ export default function Treasury() {
 
         <TreasuryExecutivePanel />
 
+        <StrategicIntelligence />
+
         <TreasurySummary />
 
         <TreasuryPerformanceTrend />
@@ -31,10 +35,10 @@ export default function Treasury() {
 
         <PortfolioComposition />
 
+        <MarketRiskDashboard />
+        
         <DurationAnalysis />
-
-        <MarketOutlook />
-
+        
         <TreasuryEarlyWarning />
 
 </div>
