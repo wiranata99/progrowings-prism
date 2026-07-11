@@ -10,6 +10,12 @@ export default function FundingComposition() {
   fundingComposition[0].value +
   fundingComposition[1].value;
 
+  const target = 75;
+  const mom = 1.24;
+
+  const stability =
+  casa >= target ? "Stable" : "Watch";
+
   return (
 
     <Panel title="Funding Composition">
@@ -19,19 +25,63 @@ export default function FundingComposition() {
         <div>
 
           <div className="mb-3 flex items-center justify-between">
+            <div className="mb-6 w-full rounded-2xl border border-cyan-500/20 bg-cyan-500/5 px-8 py-6">
 
-            <span className="text-lg font-semibold">
+            <div className="grid grid-cols-4 gap-8">
 
-              CASA Ratio
+            <div>
 
-            </span>
+              <p className="text-xs uppercase tracking-wider text-slate-500">
+                Funding Stability
+              </p>
 
-            <span className="text-3xl font-bold text-cyan-400">
+              <p className="mt-2 text-xl font-bold text-emerald-400">
+                {stability}
+              </p>
 
-              {casa}%
+            </div>
 
-            </span>
+            <div>
 
+              <p className="text-xs uppercase tracking-wider text-slate-500">
+                CASA Ratio
+              </p>
+
+              <p className="mt-2 text-xl font-bold text-cyan-400">
+                {casa.toFixed(2)}%
+              </p>
+
+            </div>
+
+            <div>
+
+              <p className="text-xs uppercase tracking-wider text-slate-500">
+                Target
+              </p>
+
+              <p className="mt-2 text-xl font-bold text-white">
+                &gt; {target.toFixed(2)}%
+              </p>
+
+            </div>
+
+            <div>
+
+              <p className="text-xs uppercase tracking-wider text-slate-500">
+                MoM
+              </p>
+
+              <p className="mt-2 text-xl font-bold text-emerald-400">
+                ▲ +{mom.toFixed(2)}%
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+           
           </div>
 
           <div className="h-5 overflow-hidden rounded-full bg-slate-800">
@@ -92,11 +142,31 @@ export default function FundingComposition() {
 
               </div>
 
-              <div className="mt-2 text-sm text-slate-400">
+              <div className="mt-3 flex items-center justify-between">
 
-                Outstanding {item.amount}
+              <div>
+
+                <p className="text-xs uppercase tracking-wider text-slate-500">
+                  Outstanding
+                </p>
+
+                <p className="mt-1 font-semibold text-white">
+                  {item.amount}
+                </p>
 
               </div>
+
+              <div
+                className={`text-sm font-semibold ${
+                  item.value >= 20
+                    ? "text-emerald-400"
+                    : "text-amber-400"
+                }`}
+              >
+                ▲ +0.42%
+              </div>
+
+            </div>
 
             </div>
 
@@ -106,6 +176,32 @@ export default function FundingComposition() {
 
       </div>
 
+          <div className="mt-8 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-5">
+
+        <p className="text-xs font-semibold uppercase tracking-[0.20em] text-cyan-400">
+          PRISM Insight
+        </p>
+
+        <p className="mt-4 leading-7 text-slate-300">
+
+          Funding composition remains healthy with
+          CASA contributing
+          <span className="font-semibold text-cyan-400">
+            {" "}{casa.toFixed(2)}%
+          </span>
+          of total funding, comfortably above the internal
+          target of
+          <span className="font-semibold text-white">
+            {" "}{target.toFixed(2)}%
+          </span>.
+          Stable CASA growth continues to reduce reliance
+          on higher-cost time deposits and supports a
+          resilient liquidity profile.
+
+        </p>
+
+      </div>
+    
     </Panel>
 
   );

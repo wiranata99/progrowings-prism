@@ -34,25 +34,27 @@ export default function LiquidityExecutivePanel() {
 
         <p className="mt-4 leading-8 text-slate-300">
 
-          Posisi likuiditas Bank masih berada pada kondisi
+          The Bank's liquidity position remains
           <span className="font-semibold text-emerald-400">
-            {" "}sangat memadai
-          </span>
-          dengan seluruh indikator regulator berada di atas threshold minimum.
-          LCR tercatat sebesar
-          <span className="font-semibold text-white">
-            {" "}152%
+            {" "}strong and well above regulatory requirements
           </span>,
-          NSFR Daily sebesar
+          with all key liquidity indicators comfortably exceeding
+          internal and regulatory thresholds.
+          The Liquidity Coverage Ratio (LCR) stands at
           <span className="font-semibold text-white">
-            {" "}126%
+            {" "}152.00%
           </span>,
-          sedangkan proyeksi NSFR akhir bulan masih berada pada
+          while Daily NSFR is recorded at
           <span className="font-semibold text-white">
-            {" "}118%
+            {" "}126.00%
           </span>.
-          Meskipun demikian,
-          penurunan DPK selama tiga hari terakhir perlu dimonitor untuk mengantisipasi tekanan likuiditas jangka pendek.
+          Month-end NSFR is projected to remain healthy at
+          <span className="font-semibold text-white">
+            {" "}118.00%
+          </span>.
+          Nevertheless, the recent three-day decline in customer deposits
+          should continue to be monitored to anticipate potential short-term
+          funding pressure.
 
         </p>
 
@@ -68,13 +70,13 @@ export default function LiquidityExecutivePanel() {
 
         <ul className="mt-4 space-y-3 text-slate-300">
 
-          <li>• DPK mengalami net outflow selama tiga hari berturut-turut.</li>
+          <li>• Customer deposits recorded net outflows for three consecutive business days.</li>
 
-          <li>• CASA Ratio masih sedikit di bawah target Corporate Plan.</li>
+          <li>• CASA Ratio remains marginally below the Corporate Plan target.</li>
 
-          <li>• Funding masih didominasi deposito jangka pendek.</li>
+          <li>• Funding structure is still relatively concentrated in short-term time deposits.</li>
 
-          <li>• Liquidity Buffer masih memadai namun perlu dijaga menjelang akhir bulan.</li>
+          <li>• Liquidity Buffer remains adequate but requires close monitoring approaching month-end.</li>
 
         </ul>
 
@@ -90,13 +92,13 @@ export default function LiquidityExecutivePanel() {
 
         <ul className="mt-4 space-y-3 text-slate-300">
 
-          <li>✓ Optimalkan akuisisi CASA dari nasabah eksisting.</li>
+          <li>✓ Accelerate CASA acquisition from existing customer relationships.</li>
 
-          <li>✓ Review pricing deposito tenor pendek.</li>
+          <li>✓ Review short-term deposit pricing strategy to optimize funding costs.</li>
 
-          <li>✓ Monitor proyeksi NSFR harian hingga akhir bulan.</li>
+          <li>✓ Closely monitor daily NSFR projection through month-end.</li>
 
-          <li>✓ Lakukan stress monitoring terhadap skenario DPK outflow.</li>
+          <li>✓ Perform targeted liquidity stress monitoring under deposit outflow scenarios.</li>
 
         </ul>
 
@@ -128,10 +130,13 @@ export default function LiquidityExecutivePanel() {
 
         <p className="mt-4 leading-7 text-slate-300">
 
-          Berdasarkan seluruh indikator likuiditas, posisi kas,
-          regulatory ratio, proyeksi arus kas, serta liquidity buffer,
-          Bank diperkirakan tetap mampu memenuhi kewajiban jangka pendek
-          tanpa tekanan yang material dalam kondisi normal.
+          Based on current liquidity ratios, cash position,
+          funding profile, projected cash flows,
+          and available liquidity buffers,
+          the Bank is expected to comfortably meet its short-term
+          obligations under normal operating conditions.
+          Current liquidity risk remains within the approved risk appetite,
+          with no indication of immediate funding stress.
 
         </p>
 
