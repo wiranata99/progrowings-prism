@@ -7,6 +7,7 @@ import ProductMarginAnalysis from "../components/profitability/ProductMarginAnal
 import ProfitabilityEarlyWarning from "../components/profitability/ProfitabilityEarlyWarning";
 import ProfitDriverAnalysis from "../components/profitability/ProfitDriverAnalysis";
 import SectionHeader from "../components/common/SectionHeader";
+import StrategicIntelligence from "../components/profitability/StrategicIntelligence";
 
 export default function Profitability() {
   return (
@@ -22,6 +23,8 @@ export default function Profitability() {
 />
 
         <ProfitabilityExecutivePanel />
+
+        <StrategicIntelligence />
 
         <ProfitabilitySummary />
 

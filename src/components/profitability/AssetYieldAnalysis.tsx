@@ -62,18 +62,17 @@ export default function AssetYieldAnalysis() {
       <div className="mt-8 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-5">
 
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-400">
-          AI Insight
+          Executive Insight
         </p>
 
         <p className="mt-4 leading-7 text-slate-300">
-
-          Consumer Loan memberikan kontribusi terbesar terhadap pendapatan bunga
-          dengan yield tertinggi sebesar
-          <span className="font-semibold text-white"> 11.76%</span>.
-          Sementara itu, margin Corporate Loan mulai mengalami tekanan sehingga
-          strategi repricing dan optimalisasi portofolio perlu dipertimbangkan.
-
-        </p>
+  Consumer Lending remains the Bank's largest contributor to interest income,
+  supported by the highest asset yield of
+  <span className="font-semibold text-white"> 11.76%</span>.
+  Meanwhile, Corporate Lending margins continue to experience moderate pressure,
+  indicating opportunities for portfolio optimization and selective repricing
+  to strengthen overall earnings quality.
+</p>
 
       </div>
 

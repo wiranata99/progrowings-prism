@@ -85,18 +85,16 @@ export default function ProductMarginAnalysis() {
       <div className="mt-8 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-5">
 
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-400">
-          AI Executive Insight
+          Executive Insight
         </p>
 
         <p className="mt-4 leading-7 text-slate-300">
-
-          Consumer Loan masih menjadi kontributor margin terbesar
-          terhadap pendapatan bunga Bank.
-          Sebaliknya,
-          Mortgage menunjukkan margin terendah sehingga perlu dilakukan
-          evaluasi pricing maupun efisiensi biaya pendanaan.
-
-        </p>
+  Consumer Lending continues to generate the strongest portfolio margin,
+  remaining the primary contributor to the Bank's interest income.
+  Mortgage products deliver comparatively lower spreads, suggesting potential
+  opportunities for pricing optimization and funding cost improvements to
+  enhance overall portfolio profitability.
+</p>
 
       </div>
 

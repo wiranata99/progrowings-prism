@@ -5,7 +5,7 @@ import Liquidity from "../pages/Liquidity";
 import Profitability from "../pages/Profitability";
 import Treasury from "../pages/Treasury";
 import MarketRisk from "../pages/MarketRisk";
-import StressTesting from "../pages/StressTesting";
+// import StressTesting from "../pages/StressTesting";
 import Operational from "../pages/Operational";
 
 
@@ -53,11 +53,7 @@ export default function AppRouter() {
         element={<Operational />}
         />
 
-      <Route
-        path="/stress-testing"
-        element={<StressTesting />}
-      />
-
+      
     </Routes>
   );
 }

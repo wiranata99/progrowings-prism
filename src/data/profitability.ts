@@ -1,4 +1,5 @@
 import type { MetricData } from "../types/metric";
+import type { WarningData } from "../types/warning";
 
 export const profitabilitySummary: MetricData[] = [
   {
@@ -196,17 +197,9 @@ export const negativeProfitDriver: ProfitDriverData[] = [
   },
 ];
 
-export interface ProfitabilityWarning {
-  priority: "High" | "Medium" | "Low";
-  indicator: string;
-  current: string;
-  threshold: string;
-  impact: "High" | "Medium" | "Low";
-  action: string;
-  color: string;
-}
 
-export const profitabilityEarlyWarning: ProfitabilityWarning[] = [
+
+export const profitabilityEarlyWarning: WarningData[] = [
   {
     priority: "High",
     indicator: "BOPO",
@@ -214,7 +207,7 @@ export const profitabilityEarlyWarning: ProfitabilityWarning[] = [
     threshold: "75%",
     impact: "High",
     action: "Monitor",
-    color: "bg-amber-500/15 text-amber-400",
+    
   },
   {
     priority: "Medium",
@@ -223,7 +216,7 @@ export const profitabilityEarlyWarning: ProfitabilityWarning[] = [
     threshold: "1.50%",
     impact: "Medium",
     action: "Review",
-    color: "bg-cyan-500/15 text-cyan-400",
+    
   },
   {
     priority: "Low",
@@ -232,6 +225,6 @@ export const profitabilityEarlyWarning: ProfitabilityWarning[] = [
     threshold: "Corporate Plan",
     impact: "Low",
     action: "Normal",
-    color: "bg-emerald-500/15 text-emerald-400",
+    
   },
 ];

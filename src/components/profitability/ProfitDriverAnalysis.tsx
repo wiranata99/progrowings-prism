@@ -1,34 +1,9 @@
 import Panel from "../ui/Panel";
+import {
+  positiveProfitDriver,
+  negativeProfitDriver,
+} from "../../data/profitability";
 
-const positive = [
-  {
-    factor: "CASA Growth",
-    impact: "+18 bps",
-  },
-  {
-    factor: "Consumer Loan Yield",
-    impact: "+24 bps",
-  },
-  {
-    factor: "Fee Based Income",
-    impact: "+8 bps",
-  },
-];
-
-const negative = [
-  {
-    factor: "Cost of Credit",
-    impact: "-11 bps",
-  },
-  {
-    factor: "Operating Expense",
-    impact: "-7 bps",
-  },
-  {
-    factor: "Corporate Margin",
-    impact: "-4 bps",
-  },
-];
 
 export default function ProfitDriverAnalysis() {
   return (
@@ -44,7 +19,7 @@ export default function ProfitDriverAnalysis() {
 
           <div className="space-y-4">
 
-            {positive.map((item) => (
+            {positiveProfitDriver.map((item) => (
 
               <div
                 key={item.factor}
@@ -83,7 +58,7 @@ export default function ProfitDriverAnalysis() {
 
           <div className="space-y-4">
 
-            {negative.map((item) => (
+            {negativeProfitDriver.map((item) => (
 
               <div
                 key={item.factor}
@@ -119,18 +94,17 @@ export default function ProfitDriverAnalysis() {
       <div className="mt-8 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-5">
 
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-400">
-          AI Executive Insight
+          Executive Insight
         </p>
 
         <p className="mt-4 leading-7 text-slate-300">
-
-          Profitabilitas Bank masih ditopang oleh pertumbuhan CASA,
-          peningkatan yield Consumer Loan, serta kenaikan Fee Based Income.
-          Namun demikian, peningkatan Cost of Credit pada segmen Corporate
-          mulai memberikan tekanan terhadap margin sehingga perlu menjadi
-          perhatian manajemen.
-
-        </p>
+  The Bank's profitability continues to be supported by strong CASA growth,
+  improving Consumer Lending yields, and sustained Fee Based Income expansion.
+  However, rising Cost of Credit and increasing operating expenses have begun
+  to place moderate pressure on portfolio margins. Maintaining funding
+  discipline, pricing optimization, and operational efficiency will be
+  essential to preserving sustainable earnings growth.
+</p>
 
       </div>
 

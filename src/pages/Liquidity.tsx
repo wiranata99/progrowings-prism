@@ -6,7 +6,6 @@ import FundingComposition from "../components/liquidity/FundingComposition";
 import LiquidityGap from "../components/liquidity/LiquidityGap";
 import LiquidityEarlyWarning from "../components/liquidity/LiquidityEarlyWarning";
 import SectionHeader from "../components/common/SectionHeader";
-import StrategicIntelligence from "../components/treasury/StrategicIntelligence";
 
 export default function Liquidity() {
   return (
@@ -21,9 +20,7 @@ export default function Liquidity() {
 />
 
         <LiquidityExecutivePanel />
-
-        <StrategicIntelligence />
-
+        
         <LiquiditySummary />
 
         <LiquidityTrend />

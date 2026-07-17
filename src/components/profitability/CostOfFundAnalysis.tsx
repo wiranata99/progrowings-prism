@@ -59,16 +59,15 @@ export default function CostOfFundAnalysis() {
       <div className="mt-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-5">
 
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-400">
-          AI Insight
+          Executive Insight
         </p>
 
         <p className="mt-4 leading-7 text-slate-300">
-
-          Penurunan Cost of Fund terutama didorong oleh peningkatan CASA dan
-          penurunan proporsi deposito berbiaya tinggi. Kondisi ini memberikan
-          dampak positif terhadap Net Interest Margin Bank.
-
-        </p>
+  Funding costs remain well managed despite increasing competition for deposits.
+  Continued growth in low-cost CASA balances has partially offset higher term
+  deposit pricing, allowing the Bank to maintain a stable Net Interest Margin
+  while preserving funding efficiency.
+</p>
 
       </div>
 
