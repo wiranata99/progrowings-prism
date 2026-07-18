@@ -1,4 +1,7 @@
-import type { PrismSnapshot } from "../../types/prism";
+import type {
+  PrismModuleSnapshot,
+  PrismSnapshot,
+} from "../../types/prism";
 import type { DatabaseRow } from "../database/DatabaseReader";
 
 export interface SnapshotSource {
@@ -17,29 +20,67 @@ export class SnapshotBuilder {
         generatedAt: new Date(),
       },
 
-      credit: {
-        source: source.loan,
+      modules: {
+        credit: this.createModule({
+          analytics: {
+            source: source.loan,
+          },
+        }),
+
+        liquidity: this.createModule({
+          analytics: {
+            source: source.ewi,
+          },
+        }),
+
+        treasury: this.createModule({
+          analytics: {
+            source: source.ewi,
+          },
+        }),
+
+        profitability: this.createModule({
+          analytics: {
+            source: source.ewi,
+          },
+        }),
+
+        operational: this.createModule(),
+
+        balanceSheet: this.createModule({
+          analytics: {
+            source: source.nim,
+          },
+        }),
+
+        stressTesting: this.createModule(),
+
+        earlyWarningIndicators: this.createModule({
+          analytics: {
+            source: source.ewi,
+          },
+        }),
       },
 
-      liquidity: {
-        source: source.ewi,
+      dictionaries: {
+        metrics: {},
+        thresholds: {},
+        statuses: {},
+        narratives: {},
       },
+    };
+  }
 
-      treasury: {
-        source: source.ewi,
-      },
-
-      profitability: {
-        source: source.ewi,
-      },
-
-      balanceSheet: {
-        source: source.nim,
-      },
-
-      earlyWarning: {
-        source: source.ewi,
-      },
+  private createModule(
+    overrides: Partial<PrismModuleSnapshot> = {}
+  ): PrismModuleSnapshot {
+    return {
+      executive: {},
+      summary: {},
+      analytics: {},
+      earlyWarning: {},
+      narratives: {},
+      ...overrides,
     };
   }
 }
