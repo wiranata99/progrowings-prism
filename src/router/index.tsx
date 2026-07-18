@@ -1,18 +1,19 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+
 import { Dashboard } from "../pages/Dashboard";
 import CreditRisk from "../pages/CreditRisk";
 import Liquidity from "../pages/Liquidity";
+import MarketRisk from "../pages/MarketRisk";
+import Operational from "../pages/Operational";
 import Profitability from "../pages/Profitability";
 import Treasury from "../pages/Treasury";
-import MarketRisk from "../pages/MarketRisk";
-// import StressTesting from "../pages/StressTesting";
-import Operational from "../pages/Operational";
+import UploadData from "../pages/UploadData";
 
+// import StressTesting from "../pages/StressTesting";
 
 export default function AppRouter() {
   return (
     <Routes>
-
       <Route
         path="/"
         element={<Navigate to="/dashboard" replace />}
@@ -34,11 +35,6 @@ export default function AppRouter() {
       />
 
       <Route
-        path="/profitability"
-        element={<Profitability />}
-      />
-
-      <Route
         path="/treasury"
         element={<Treasury />}
       />
@@ -49,11 +45,24 @@ export default function AppRouter() {
       />
 
       <Route
+        path="/profitability"
+        element={<Profitability />}
+      />
+
+      <Route
         path="/operational"
         element={<Operational />}
-        />
+      />
 
-      
+      <Route
+        path="/upload-data"
+        element={<UploadData />}
+      />
+
+      <Route
+        path="*"
+        element={<Navigate to="/dashboard" replace />}
+      />
     </Routes>
   );
 }

@@ -1,12 +1,14 @@
 import {
   Activity,
   BarChart3,
+  Braces,
+  DollarSign,
   Droplets,
   FileText,
   LayoutDashboard,
-  DollarSign,
   Settings,
   ShieldCheck,
+  Upload,
   Zap,
 } from "lucide-react";
 
@@ -56,13 +58,11 @@ const executiveMenu: MenuGroup[] = [
         name: "Treasury & Market Intelligence",
         icon: BarChart3,
         path: "/treasury",
-        
       },
       {
         name: "Profitability Intelligence",
         icon: DollarSign,
         path: "/profitability",
-        
       },
       {
         name: "Operational Intelligence",
@@ -90,10 +90,20 @@ const executiveMenu: MenuGroup[] = [
     title: "SYSTEM",
     items: [
       {
+        name: "Upload Data",
+        icon: Upload,
+        path: "/upload-data",
+      },
+            {
+        name: "Snapshot Viewer",
+        icon: Braces,
+        path: "/snapshot",
+      },
+      {
         name: "Settings",
         icon: Settings,
         path: "#",
-      },
+      },   
     ],
   },
 ];
@@ -101,9 +111,7 @@ const executiveMenu: MenuGroup[] = [
 export default function Sidebar({ onClose }: SidebarProps) {
   return (
     <aside className="flex h-screen w-72 flex-col border-r border-slate-800 bg-[#08111E]">
-
       <div className="border-b border-slate-800 px-8 py-8">
-
         <h1 className="text-4xl font-black tracking-tight text-cyan-400">
           PRISM
         </h1>
@@ -111,30 +119,20 @@ export default function Sidebar({ onClose }: SidebarProps) {
         <p className="mt-2 text-sm text-slate-400">
           Enterprise Risk Intelligence
         </p>
-
       </div>
 
       <div className="flex-1 overflow-y-auto px-5 py-6">
-
         {executiveMenu.map((group) => (
-
-          <div
-            key={group.title}
-            className="mb-8"
-          >
-
+          <div key={group.title} className="mb-8">
             <p className="mb-3 px-3 text-xs font-semibold tracking-[0.25em] text-slate-500">
               {group.title}
             </p>
 
             <div className="space-y-1">
-
               {group.items.map((item) => {
-
                 const Icon = item.icon;
 
                 return (
-
                   <NavLink
                     key={item.name}
                     to={item.path}
@@ -147,10 +145,8 @@ export default function Sidebar({ onClose }: SidebarProps) {
                       }`
                     }
                   >
-
                     {({ isActive }) => (
                       <>
-
                         {isActive && (
                           <div className="absolute bottom-2 left-0 top-2 w-1 rounded-r-full bg-cyan-400" />
                         )}
@@ -160,61 +156,40 @@ export default function Sidebar({ onClose }: SidebarProps) {
                           className="transition-transform duration-300 group-hover:scale-110"
                         />
 
-                        <span className="font-medium">
-                          {item.name}
-                        </span>
-
+                        <span className="font-medium">{item.name}</span>
                       </>
                     )}
-
                   </NavLink>
-
                 );
-
               })}
-
             </div>
-
           </div>
-
         ))}
-
       </div>
 
       <div className="border-t border-slate-800 p-6">
-
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-
           <div className="flex items-center gap-2">
-
             <div className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
 
             <span className="text-sm font-medium text-emerald-400">
               All Services Online
             </span>
-
           </div>
 
           <div className="mt-5 border-t border-slate-800 pt-4">
-
-            <p className="font-semibold text-white">
-              Wiranata
-            </p>
+            <p className="font-semibold text-white">Wiranata</p>
 
             <p className="mt-1 text-sm text-slate-400">
               Chief Risk Officer
             </p>
-
           </div>
 
           <div className="mt-5 text-xs text-slate-500">
             PRISM v0.1 Showcase
           </div>
-
         </div>
-
       </div>
-
     </aside>
   );
 }
