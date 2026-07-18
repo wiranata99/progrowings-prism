@@ -6,6 +6,7 @@ import { SchemaLoader } from "../schema/SchemaLoader";
 import { WorkbookValidator } from "../validation/WorkbookValidator";
 import { WorkbookReader } from "../workbook/WorkbookReader";
 import { SnapshotBuilder } from "./SnapshotBuilder";
+import { SchemaRegistry } from "../registry/SchemaRegistry";
 
 export class PrismEngine {
   private readonly workbookReader = new WorkbookReader();
@@ -17,6 +18,11 @@ export class PrismEngine {
   public async load(file: File): Promise<PrismSnapshot> {
     const workbook = await this.workbookReader.read(file);
     const schemas = await this.schemaLoader.load(workbook);
+    const schemaRegistry = new SchemaRegistry(schemas);
+
+     void schemaRegistry;
+
+        this.workbookValidator.validate(workbook, schemas);
 
     this.workbookValidator.validate(workbook, schemas);
 
