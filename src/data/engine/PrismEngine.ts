@@ -20,23 +20,22 @@ export class PrismEngine {
     const schemas = await this.schemaLoader.load(workbook);
     const schemaRegistry = new SchemaRegistry(schemas);
 
-     void schemaRegistry;
-
-        this.workbookValidator.validate(workbook, schemas);
-
+     
     this.workbookValidator.validate(workbook, schemas);
 
     const ewiSheet = this.getRequiredWorksheet(workbook, "DB_EWI");
     const nimSheet = this.getRequiredWorksheet(workbook, "DB_NIM");
     const loanSheet = this.getRequiredWorksheet(workbook, "DB_LOAN");
 
-    const source = {
-      ewi: this.databaseReader.read(ewiSheet),
-      nim: this.databaseReader.read(nimSheet),
-      loan: this.databaseReader.read(loanSheet),
-    };
+    const context = {
+  registry: schemaRegistry,
 
-    return this.snapshotBuilder.build(source);
+  ewi: this.databaseReader.read(ewiSheet),
+  nim: this.databaseReader.read(nimSheet),
+  loan: this.databaseReader.read(loanSheet),
+};
+
+    return this.snapshotBuilder.build(context);
   }
 
   private getRequiredWorksheet(

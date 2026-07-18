@@ -3,15 +3,20 @@ import type {
   PrismSnapshot,
 } from "../../types/prism";
 import type { DatabaseRow } from "../database/DatabaseReader";
+import { SchemaRegistry } from "../registry/SchemaRegistry";
+import type { SemanticType } from "../schema/types";
 
-export interface SnapshotSource {
+export interface SnapshotContext {
+  registry: SchemaRegistry;
   ewi: DatabaseRow[];
   nim: DatabaseRow[];
   loan: DatabaseRow[];
 }
 
 export class SnapshotBuilder {
-  public build(source: SnapshotSource): PrismSnapshot {
+  public build(context: SnapshotContext): PrismSnapshot {
+    const latestData = this.getLatestData(context);
+
     return {
       metadata: {
         databaseVersion: "1.0.0",
@@ -23,25 +28,25 @@ export class SnapshotBuilder {
       modules: {
         credit: this.createModule({
           analytics: {
-            source: source.loan,
+            source: context.loan,
           },
         }),
 
         liquidity: this.createModule({
           analytics: {
-            source: source.ewi,
+            source: context.ewi,
           },
         }),
 
         treasury: this.createModule({
           analytics: {
-            source: source.ewi,
+            source: context.ewi,
           },
         }),
 
         profitability: this.createModule({
           analytics: {
-            source: source.ewi,
+            source: context.ewi,
           },
         }),
 
@@ -49,7 +54,7 @@ export class SnapshotBuilder {
 
         balanceSheet: this.createModule({
           analytics: {
-            source: source.nim,
+            source: context.nim,
           },
         }),
 
@@ -57,18 +62,62 @@ export class SnapshotBuilder {
 
         earlyWarningIndicators: this.createModule({
           analytics: {
-            source: source.ewi,
+            source: context.ewi,
           },
         }),
       },
 
       dictionaries: {
-        metrics: {},
-        thresholds: {},
-        statuses: {},
-        narratives: {},
+        metrics: this.buildDictionary(context, latestData, "metric"),
+        thresholds: this.buildDictionary(context, latestData, "threshold"),
+        statuses: this.buildDictionary(context, latestData, "status"),
+        narratives: this.buildDictionary(context, latestData, "narrative"),
       },
     };
+  }
+
+  private getLatestData(context: SnapshotContext): DatabaseRow {
+    return {
+      ...this.getLastValidRow(context.ewi),
+      ...this.getLastValidRow(context.nim),
+      ...this.getLastValidRow(context.loan),
+    };
+  }
+
+  private getLastValidRow(rows: DatabaseRow[]): DatabaseRow {
+    for (let index = rows.length - 1; index >= 0; index -= 1) {
+      const row = rows[index];
+
+      const hasValue = Object.values(row).some(
+        (value) => value !== null && value !== undefined && value !== ""
+      );
+
+      if (hasValue) {
+        return row;
+      }
+    }
+
+    return {};
+  }
+
+  private buildDictionary(
+    context: SnapshotContext,
+    data: DatabaseRow,
+    semanticType: SemanticType
+  ): Record<string, unknown> {
+    const dictionary: Record<string, unknown> = {};
+
+    const fields = context.registry.find({
+      semanticType,
+    });
+
+    for (const field of fields) {
+      if (field.header in data) {
+        dictionary[field.header] = data[field.header];
+      }
+    }
+
+    return dictionary;
   }
 
   private createModule(
