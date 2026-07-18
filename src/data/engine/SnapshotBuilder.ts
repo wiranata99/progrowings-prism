@@ -7,6 +7,9 @@ import { SchemaRegistry } from "../registry/SchemaRegistry";
 import type { SemanticType } from "../schema/types";
 import { CreditSnapshotAdapter } from "../adapters/CreditSnapshotAdapter";
 import { LiquiditySnapshotAdapter } from "../adapters/LiquiditySnapshotAdapter";
+import { TreasurySnapshotAdapter } from "../adapters/TreasurySnapshotAdapter";
+import { ProfitabilitySnapshotAdapter } from "../adapters/ProfitabilitySnapshotAdapter";
+import { OperationalSnapshotAdapter } from "../adapters/OperationalSnapshotAdapter";
 
 export interface SnapshotContext {
   registry: SchemaRegistry;
@@ -39,19 +42,20 @@ export class SnapshotBuilder {
             ewiRows: context.ewi,
             }),
 
-        treasury: this.createModule({
-          analytics: {
-            source: context.ewi,
-          },
-        }),
+        treasury: this.treasuryAdapter.build({
+            registry: context.registry,
+            ewiRows: context.ewi,
+            }),
 
-        profitability: this.createModule({
-          analytics: {
-            source: context.ewi,
-          },
-        }),
+        profitability: this.profitabilityAdapter.build({
+            registry: context.registry,
+            ewiRows: context.ewi,
+            }),
 
-        operational: this.createModule(),
+        operational: this.operationalAdapter.build({
+            registry: context.registry,
+            ewiRows: context.ewi,
+            }),
 
         balanceSheet: this.createModule({
           analytics: {
@@ -137,4 +141,10 @@ export class SnapshotBuilder {
   private readonly creditAdapter = new CreditSnapshotAdapter();
 
   private readonly liquidityAdapter = new LiquiditySnapshotAdapter();
+
+  private readonly treasuryAdapter = new TreasurySnapshotAdapter();
+
+  private readonly profitabilityAdapter = new ProfitabilitySnapshotAdapter();
+
+  private readonly operationalAdapter = new OperationalSnapshotAdapter();
 }
