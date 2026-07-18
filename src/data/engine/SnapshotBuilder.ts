@@ -6,6 +6,7 @@ import type { DatabaseRow } from "../database/DatabaseReader";
 import { SchemaRegistry } from "../registry/SchemaRegistry";
 import type { SemanticType } from "../schema/types";
 import { CreditSnapshotAdapter } from "../adapters/CreditSnapshotAdapter";
+import { LiquiditySnapshotAdapter } from "../adapters/LiquiditySnapshotAdapter";
 
 export interface SnapshotContext {
   registry: SchemaRegistry;
@@ -33,11 +34,10 @@ export class SnapshotBuilder {
             loanRows: context.loan,
             }),
 
-        liquidity: this.createModule({
-          analytics: {
-            source: context.ewi,
-          },
-        }),
+        liquidity: this.liquidityAdapter.build({
+            registry: context.registry,
+            ewiRows: context.ewi,
+            }),
 
         treasury: this.createModule({
           analytics: {
@@ -135,4 +135,6 @@ export class SnapshotBuilder {
   }
 
   private readonly creditAdapter = new CreditSnapshotAdapter();
+
+  private readonly liquidityAdapter = new LiquiditySnapshotAdapter();
 }
