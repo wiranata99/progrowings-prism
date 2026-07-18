@@ -10,6 +10,7 @@ import { LiquiditySnapshotAdapter } from "../adapters/LiquiditySnapshotAdapter";
 import { TreasurySnapshotAdapter } from "../adapters/TreasurySnapshotAdapter";
 import { ProfitabilitySnapshotAdapter } from "../adapters/ProfitabilitySnapshotAdapter";
 import { OperationalSnapshotAdapter } from "../adapters/OperationalSnapshotAdapter";
+import { BalanceSheetSnapshotAdapter } from "../adapters/BalanceSheetSnapshotAdapter";
 
 export interface SnapshotContext {
   registry: SchemaRegistry;
@@ -57,11 +58,10 @@ export class SnapshotBuilder {
             ewiRows: context.ewi,
             }),
 
-        balanceSheet: this.createModule({
-          analytics: {
-            source: context.nim,
-          },
-        }),
+        balanceSheet: this.balanceSheetAdapter.build({
+            registry: context.registry,
+            nimRows: context.nim,
+            }),
 
         stressTesting: this.createModule(),
 
@@ -147,4 +147,6 @@ export class SnapshotBuilder {
   private readonly profitabilityAdapter = new ProfitabilitySnapshotAdapter();
 
   private readonly operationalAdapter = new OperationalSnapshotAdapter();
+
+  private readonly balanceSheetAdapter = new BalanceSheetSnapshotAdapter();
 }
