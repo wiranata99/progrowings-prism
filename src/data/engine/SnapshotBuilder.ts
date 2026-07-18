@@ -11,6 +11,7 @@ import { TreasurySnapshotAdapter } from "../adapters/TreasurySnapshotAdapter";
 import { ProfitabilitySnapshotAdapter } from "../adapters/ProfitabilitySnapshotAdapter";
 import { OperationalSnapshotAdapter } from "../adapters/OperationalSnapshotAdapter";
 import { BalanceSheetSnapshotAdapter } from "../adapters/BalanceSheetSnapshotAdapter";
+import { EarlyWarningSnapshotAdapter } from "../adapters/EarlyWarningSnapshotAdapter";
 
 export interface SnapshotContext {
   registry: SchemaRegistry;
@@ -65,11 +66,10 @@ export class SnapshotBuilder {
 
         stressTesting: this.createModule(),
 
-        earlyWarningIndicators: this.createModule({
-          analytics: {
-            source: context.ewi,
-          },
-        }),
+        earlyWarningIndicators: this.earlyWarningAdapter.build({
+            registry: context.registry,
+            ewiRows: context.ewi,
+            }),
       },
 
       dictionaries: {
@@ -149,4 +149,8 @@ export class SnapshotBuilder {
   private readonly operationalAdapter = new OperationalSnapshotAdapter();
 
   private readonly balanceSheetAdapter = new BalanceSheetSnapshotAdapter();
+
+  private readonly earlyWarningAdapter = new EarlyWarningSnapshotAdapter();
+
+    
 }
