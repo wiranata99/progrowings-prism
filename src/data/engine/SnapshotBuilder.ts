@@ -1,7 +1,4 @@
-import type {
-  PrismModuleSnapshot,
-  PrismSnapshot,
-} from "../../types/prism";
+import type {PrismSnapshot,} from "../../types/prism";
 import type { DatabaseRow } from "../database/DatabaseReader";
 import { SchemaRegistry } from "../registry/SchemaRegistry";
 import type { SemanticType } from "../schema/types";
@@ -12,6 +9,7 @@ import { ProfitabilitySnapshotAdapter } from "../adapters/ProfitabilitySnapshotA
 import { OperationalSnapshotAdapter } from "../adapters/OperationalSnapshotAdapter";
 import { BalanceSheetSnapshotAdapter } from "../adapters/BalanceSheetSnapshotAdapter";
 import { EarlyWarningSnapshotAdapter } from "../adapters/EarlyWarningSnapshotAdapter";
+import { StressTestingSnapshotAdapter } from "../adapters/StressTestingSnapshotAdapter";
 
 export interface SnapshotContext {
   registry: SchemaRegistry;
@@ -64,7 +62,10 @@ export class SnapshotBuilder {
             nimRows: context.nim,
             }),
 
-        stressTesting: this.createModule(),
+        stressTesting: this.stressTestingAdapter.build({
+            registry: context.registry,
+            ewiRows: context.ewi,
+            }),
 
         earlyWarningIndicators: this.earlyWarningAdapter.build({
             registry: context.registry,
@@ -125,20 +126,7 @@ export class SnapshotBuilder {
     return dictionary;
   }
 
-  private createModule(
-    overrides: Partial<PrismModuleSnapshot> = {}
-  ): PrismModuleSnapshot {
-    return {
-      executive: {},
-      summary: {},
-      analytics: {},
-      earlyWarning: {},
-      narratives: {},
-      ...overrides,
-    };
-  }
-
-  private readonly creditAdapter = new CreditSnapshotAdapter();
+   private readonly creditAdapter = new CreditSnapshotAdapter();
 
   private readonly liquidityAdapter = new LiquiditySnapshotAdapter();
 
@@ -151,6 +139,8 @@ export class SnapshotBuilder {
   private readonly balanceSheetAdapter = new BalanceSheetSnapshotAdapter();
 
   private readonly earlyWarningAdapter = new EarlyWarningSnapshotAdapter();
+
+  private readonly stressTestingAdapter = new StressTestingSnapshotAdapter();
 
     
 }
