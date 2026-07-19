@@ -1,54 +1,176 @@
-// PortfolioMomentum.tsx
-// Replace only the logic section
+import {
+  useMemo,
+  useState,
+} from "react";
 
-import { useMemo, useState } from "react";
-import { portfolioSegmentationTrend } from "../../data/credit";
 import PortfolioSegmentCard from "./PortfolioSegmentCard";
 import PortfolioMomentumHeader from "./PortfolioMomentumHeader";
 import PortfolioMomentumChart from "./PortfolioMomentumChart";
 
+import { usePrismStore } from "../../store/prismStore";
+
+import {
+  mapCreditMomentum,
+  type CreditMomentumPoint,
+} from "../../presentation/mappers/creditMomentumMapper";
+
 type Period = 1 | 3 | 6 | 12;
 
-export default function PortfolioMomentum() {
-  const [period, setPeriod] = useState<Period>(12);
+function formatAmount(value: number): string {
+  return `Rp ${value.toLocaleString(
+    "en-US",
+    {
+      maximumFractionDigits: 0,
+    }
+  )} Bio`;
+}
 
-  const chartData = useMemo(() => {
-    if (period === 12) return portfolioSegmentationTrend;
+function formatRatio(value: number): string {
+  return `${value.toFixed(2)}%`;
+}
 
-    return portfolioSegmentationTrend.slice(
-      portfolioSegmentationTrend.length - period
+function filterByPeriod(
+  rows: CreditMomentumPoint[],
+  period: Period
+): CreditMomentumPoint[] {
+  if (rows.length === 0) {
+    return [];
+  }
+
+  const latestRow = rows.at(-1);
+
+  if (!latestRow) {
+    return [];
+  }
+
+  const endDate = new Date(
+    latestRow.timestamp
+  );
+
+  const startDate = new Date(endDate);
+
+  startDate.setMonth(
+    startDate.getMonth() - period
+  );
+
+  return rows.filter((row) => {
+    return (
+      row.timestamp >=
+        startDate.getTime() &&
+      row.timestamp <= endDate.getTime()
     );
-  }, [period]);
+  });
+}
 
-  const ratios = chartData.map((d) => Number(d.totalRatio));
+export default function PortfolioMomentum() {
+  const [period, setPeriod] =
+    useState<Period>(12);
 
-  const latest = ratios.at(-1) ?? 0;
-  const peak = Math.max(...ratios);
-  const lowest = Math.min(...ratios);
+  const snapshot = usePrismStore(
+    (state) => state.snapshot
+  );
+
+  const history =
+    (
+      snapshot?.modules.credit.analytics
+        ?.history as Record<
+        string,
+        unknown
+      >[]
+    ) ?? [];
+
+  const momentumData = useMemo(
+    () => mapCreditMomentum(history),
+    [history]
+  );
+
+  const chartData = useMemo(
+    () =>
+      filterByPeriod(
+        momentumData.history,
+        period
+      ),
+    [momentumData.history, period]
+  );
+
+  const ratios = chartData
+    .map((row) => row.totalRatio)
+    .filter((value) =>
+      Number.isFinite(value)
+    );
+
+  const latest =
+    ratios.at(-1) ?? 0;
+
+  const peak =
+    ratios.length > 0
+      ? Math.max(...ratios)
+      : 0;
+
+  const lowest =
+    ratios.length > 0
+      ? Math.min(...ratios)
+      : 0;
 
   return (
     <section className="space-y-6">
-
       <div className="grid gap-6 xl:grid-cols-2">
-
         <PortfolioSegmentCard
           title="Consumer Loan"
-          outstanding="Rp89.4 T"
-          nplAmount="Rp2.19 T"
-          ratio="2.45%"
+          outstanding={formatAmount(
+            momentumData.consumer
+              .outstanding
+          )}
+          nplAmount={formatAmount(
+            momentumData.consumer
+              .nplAmount
+          )}
+          ratio={formatRatio(
+            momentumData.consumer.ratio
+          )}
+          outstandingDelta={
+            momentumData.consumer
+              .outstandingDelta
+          }
+          nplDelta={
+            momentumData.consumer
+              .nplDelta
+          }
+          ratioDelta={
+            momentumData.consumer
+              .ratioDelta
+          }
         />
 
         <PortfolioSegmentCard
           title="Corporate Loan"
-          outstanding="Rp123.5 T"
-          nplAmount="Rp2.96 T"
-          ratio="2.40%"
+          outstanding={formatAmount(
+            momentumData.corporate
+              .outstanding
+          )}
+          nplAmount={formatAmount(
+            momentumData.corporate
+              .nplAmount
+          )}
+          ratio={formatRatio(
+            momentumData.corporate.ratio
+          )}
+          outstandingDelta={
+            momentumData.corporate
+              .outstandingDelta
+          }
+          nplDelta={
+            momentumData.corporate
+              .nplDelta
+          }
+          ratioDelta={
+            momentumData.corporate
+              .ratioDelta
+          }
         />
-
       </div>
 
       <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
-
         <PortfolioMomentumHeader
           latest={latest}
           peak={peak}
@@ -59,11 +181,9 @@ export default function PortfolioMomentum() {
 
         <PortfolioMomentumChart
           data={chartData}
-           period={period}
+          period={period}
         />
-
       </div>
-
     </section>
   );
 }

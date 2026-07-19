@@ -1,6 +1,7 @@
 export interface PrismMetadata {
   databaseVersion: string;
   schemaVersion: string;
+  // engineVersion: number;
   snapshotDate: Date;
   generatedAt: Date;
 }
@@ -34,6 +35,7 @@ export interface PrismDictionaries {
 }
 
 export interface PrismSnapshot {
+  version: number;
   metadata: PrismMetadata;
   modules: PrismModules;
   dictionaries: PrismDictionaries;

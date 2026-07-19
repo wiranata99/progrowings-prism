@@ -8,6 +8,7 @@ import Operational from "../pages/Operational";
 import Profitability from "../pages/Profitability";
 import Treasury from "../pages/Treasury";
 import UploadData from "../pages/UploadData";
+import SnapshotViewer from "../pages/SnapshotViewer";
 
 // import StressTesting from "../pages/StressTesting";
 
@@ -63,6 +64,12 @@ export default function AppRouter() {
         path="*"
         element={<Navigate to="/dashboard" replace />}
       />
+
+      <Route
+        path="/snapshot"
+        element={<SnapshotViewer />}
+      />
+      
     </Routes>
   );
 }

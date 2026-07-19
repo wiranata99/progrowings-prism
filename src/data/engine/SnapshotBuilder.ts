@@ -16,6 +16,7 @@ export interface SnapshotContext {
   ewi: DatabaseRow[];
   nim: DatabaseRow[];
   loan: DatabaseRow[];
+  threshold: DatabaseRow[];
 }
 
 export class SnapshotBuilder {
@@ -23,9 +24,11 @@ export class SnapshotBuilder {
     const latestData = this.getLatestData(context);
 
     return {
+      version: 1,
       metadata: {
         databaseVersion: "1.0.0",
         schemaVersion: "1.0.0",
+        //engineVersion: 1,
         snapshotDate: new Date(),
         generatedAt: new Date(),
       },
@@ -35,6 +38,7 @@ export class SnapshotBuilder {
             registry: context.registry,
             ewiRows: context.ewi,
             loanRows: context.loan,
+            thresholdRows: context.threshold,
             }),
 
         liquidity: this.liquidityAdapter.build({

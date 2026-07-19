@@ -1,6 +1,8 @@
 import type { MetricStatus } from "../types/metric";
 
-export function getHealthScore(status: MetricStatus): number {
+export function getHealthScore(
+  status: MetricStatus
+): number {
   switch (status) {
     case "Healthy":
       return 92;
@@ -8,8 +10,11 @@ export function getHealthScore(status: MetricStatus): number {
     case "Watch":
       return 72;
 
+    case "Warning":
+      return 48;
+
     case "Critical":
-      return 38;
+      return 28;
 
     default:
       return 0;

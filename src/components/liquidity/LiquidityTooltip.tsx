@@ -15,7 +15,7 @@ interface Props {
 const getLabel = (key: string) => {
   switch (key) {
     case "value":
-      return "LCR";
+      return "Liquidity Coverage Ratio";
 
     default:
       return key;
@@ -25,7 +25,7 @@ const getLabel = (key: string) => {
 const getValue = (key: string, value: number | string) => {
   switch (key) {
     case "value":
-      return `${value}%`;
+      return `${Number(value).toFixed(2)}%`;
 
     default:
       return value;

@@ -6,13 +6,22 @@ export class SchemaLoader {
     const schemas: SchemaDefinition[] = [];
 
     for (const worksheet of workbook.worksheets) {
-      if (!worksheet.name.startsWith("SCHEMA_")) {
-        continue;
-      }
+      console.log("Worksheet:", JSON.stringify(worksheet.name));
+
+if (!worksheet.name.trim().startsWith("SCHEMA_")) {
+  continue;
+}
 
       const headerRow = worksheet.getRow(1);
 
       const columnIndex = this.buildColumnIndex(headerRow.values as unknown[]);
+
+      console.log("Sheet:", worksheet.name);
+        console.log("Header Row:", headerRow.values);
+        console.log("Column Index:", columnIndex);
+
+        console.log("Header Index:", columnIndex["Header"]);
+        console.log("Row 2:", worksheet.getRow(2).values);
 
       const fields: SchemaField[] = [];
 
@@ -32,8 +41,9 @@ export class SchemaLoader {
           component: this.getCell(row, columnIndex, "Component"),
 
           semanticType:
-            (this.getCell(row, columnIndex, "Semantic Type") as SchemaField["semanticType"]) ??
-            "metric",
+            (this.getCell(row, columnIndex, "Semantic Type")
+                .trim()
+                .toLowerCase() as SchemaField["semanticType"]) || "metric",
 
           dataType: this.getCell(row, columnIndex, "Data Type"),
 

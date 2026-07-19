@@ -13,8 +13,10 @@ export default function FundingComposition() {
   const target = 75;
   const mom = 1.24;
 
-  const stability =
-  casa >= target ? "Stable" : "Watch";
+  let stability = "Healthy";
+
+if (casa < 35) stability = "Watch";
+else if (casa < 50) stability = "Moderate";
 
   return (
 
@@ -35,7 +37,15 @@ export default function FundingComposition() {
                 Funding Stability
               </p>
 
-              <p className="mt-2 text-xl font-bold text-emerald-400">
+              <p
+  className={`mt-2 text-xl font-bold ${
+    stability === "Healthy"
+      ? "text-emerald-400"
+      : stability === "Moderate"
+      ? "text-amber-400"
+      : "text-red-400"
+  }`}
+>
                 {stability}
               </p>
 

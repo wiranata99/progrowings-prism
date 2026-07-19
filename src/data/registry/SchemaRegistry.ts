@@ -15,6 +15,16 @@ export class SchemaRegistry {
 
   public constructor(schemas: SchemaDefinition[]) {
     this.fields = schemas.flatMap((schema) => schema.fields);
+
+    console.log("=== SCHEMA LOADED ===");
+    console.table(
+      this.fields.map((field) => ({
+        header: field.header,
+        module: field.module,
+        component: field.component,
+        semanticType: field.semanticType,
+      }))
+    );
   }
 
   public getAll(): SchemaField[] {
@@ -26,20 +36,35 @@ export class SchemaRegistry {
   }
 
   public find(query: SchemaQuery): SchemaField[] {
-    return this.fields.filter((field) => {
+    const result = this.fields.filter((field) => {
       const moduleMatch =
         !query.module ||
         this.normalize(field.module) === this.normalize(query.module);
 
       const componentMatch =
         !query.component ||
-        this.normalize(field.component) === this.normalize(query.component);
+        this.normalize(field.component) ===
+          this.normalize(query.component);
 
       const semanticTypeMatch =
-        !query.semanticType || field.semanticType === query.semanticType;
+        !query.semanticType ||
+        field.semanticType === query.semanticType;
 
       return moduleMatch && componentMatch && semanticTypeMatch;
     });
+
+    console.log("=== FIND QUERY ===");
+    console.log(query);
+    console.table(
+      result.map((field) => ({
+        header: field.header,
+        module: field.module,
+        component: field.component,
+        semanticType: field.semanticType,
+      }))
+    );
+
+    return result;
   }
 
   public getMetrics(module?: string, component?: string): SchemaField[] {
