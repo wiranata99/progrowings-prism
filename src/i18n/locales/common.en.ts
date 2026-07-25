@@ -112,6 +112,8 @@ current: "Current",
 previous: "Previous",
 target: "Target",
 trend: "Trend",
+
+
 };
 
 export default common;

@@ -64,7 +64,7 @@ export default function LiquidityExecutivePanel({
         </div>
 
         <div className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-400">
-          As of {data.asOfDate} | 08:00 WIB
+          Reporting Date {data.asOfDate} | 08:00 WIB
         </div>
 
       </div>

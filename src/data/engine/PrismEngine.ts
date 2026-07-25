@@ -27,6 +27,7 @@ export class PrismEngine {
     const nimSheet = this.getRequiredWorksheet(workbook, "DB_NIM");
     const loanSheet = this.getRequiredWorksheet(workbook, "DB_LOAN");
     const thresholdSheet = this.getRequiredWorksheet(workbook, "DB_THRESHOLD");
+    const isSheet = workbook.getWorksheet("DB_IS");
 
     const context = {
   registry: schemaRegistry,
@@ -34,6 +35,7 @@ export class PrismEngine {
   nim: this.databaseReader.read(nimSheet),
   loan: this.databaseReader.read(loanSheet),
   threshold: this.databaseReader.read(thresholdSheet),
+  is: isSheet ? this.databaseReader.read(isSheet) : [],
 };
 
     return this.snapshotBuilder.build(context);

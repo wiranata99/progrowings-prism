@@ -1,4 +1,7 @@
-import type {PrismSnapshot,} from "../../types/prism";
+import type {
+  PrismSnapshot,
+  PrismModuleHealthMap,
+} from "../../types/prism";
 import type { DatabaseRow } from "../database/DatabaseReader";
 import { SchemaRegistry } from "../registry/SchemaRegistry";
 import type { SemanticType } from "../schema/types";
@@ -17,6 +20,7 @@ export interface SnapshotContext {
   nim: DatabaseRow[];
   loan: DatabaseRow[];
   threshold: DatabaseRow[];
+  is?: DatabaseRow[];
 }
 
 export class SnapshotBuilder {
@@ -53,6 +57,8 @@ export class SnapshotBuilder {
 
         profitability: this.profitabilityAdapter.build({
             registry: context.registry,
+            isRows: context.is ?? [],
+            nimRows: context.nim,
             ewiRows: context.ewi,
             }),
 
@@ -83,6 +89,7 @@ export class SnapshotBuilder {
         statuses: this.buildDictionary(context, latestData, "status"),
         narratives: this.buildDictionary(context, latestData, "narrative"),
       },
+      moduleHealth: this.buildModuleHealth(),
     };
   }
 
@@ -130,7 +137,60 @@ export class SnapshotBuilder {
     return dictionary;
   }
 
-   private readonly creditAdapter = new CreditSnapshotAdapter();
+  
+  private buildModuleHealth(): PrismModuleHealthMap {
+  return {
+    credit: {
+      status: "READY",
+      message: null,
+      missingSheets: [],
+    },
+
+    liquidity: {
+      status: "READY",
+      message: null,
+      missingSheets: [],
+    },
+
+    treasury: {
+      status: "READY",
+      message: null,
+      missingSheets: [],
+    },
+
+    profitability: {
+      status: "READY",
+      message: null,
+      missingSheets: [],
+    },
+
+    operational: {
+      status: "READY",
+      message: null,
+      missingSheets: [],
+    },
+
+    balanceSheet: {
+      status: "READY",
+      message: null,
+      missingSheets: [],
+    },
+
+    stressTesting: {
+      status: "READY",
+      message: null,
+      missingSheets: [],
+    },
+
+    earlyWarningIndicators: {
+      status: "READY",
+      message: null,
+      missingSheets: [],
+    },
+  };
+}
+
+  private readonly creditAdapter = new CreditSnapshotAdapter();
 
   private readonly liquidityAdapter = new LiquiditySnapshotAdapter();
 

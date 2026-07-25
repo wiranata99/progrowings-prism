@@ -68,7 +68,7 @@ export default function MarketOutlook() {
         <div>
 
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-400">
-            Strategic Intelligence
+            Market Performance Analytics
           </p>
 
           <h2 className="mt-2 text-3xl font-bold">

@@ -1,7 +1,6 @@
 export interface PrismMetadata {
   databaseVersion: string;
   schemaVersion: string;
-  // engineVersion: number;
   snapshotDate: Date;
   generatedAt: Date;
 }
@@ -16,6 +15,14 @@ export interface PrismModuleSnapshot {
   narratives: PrismModuleSection;
 }
 
+export type PrismModuleStatus = "READY" | "PARTIAL" | "FAILED";
+
+export interface PrismModuleHealth {
+  status: PrismModuleStatus;
+  message: string | null;
+  missingSheets: string[];
+}
+
 export interface PrismModules {
   credit: PrismModuleSnapshot;
   liquidity: PrismModuleSnapshot;
@@ -26,6 +33,10 @@ export interface PrismModules {
   stressTesting: PrismModuleSnapshot;
   earlyWarningIndicators: PrismModuleSnapshot;
 }
+
+export type PrismModuleHealthMap = {
+  [K in keyof PrismModules]: PrismModuleHealth;
+};
 
 export interface PrismDictionaries {
   metrics: Record<string, unknown>;
@@ -39,4 +50,5 @@ export interface PrismSnapshot {
   metadata: PrismMetadata;
   modules: PrismModules;
   dictionaries: PrismDictionaries;
+  moduleHealth: PrismModuleHealthMap;
 }
