@@ -35,9 +35,7 @@ interface ApiResponse<T> {
   data: T;
 }
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ??
-  "http://localhost:3001/api/v1";
+import { API_BASE_URL } from "../config/api";
 
 export async function getLiquidityCoreMetrics(
   period: 5 | 10 | 20 | 30 = 30

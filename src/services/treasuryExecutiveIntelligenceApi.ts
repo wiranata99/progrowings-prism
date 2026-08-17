@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config/api";
+
 export interface TreasuryExecutiveIntelligenceData {
   reportingDate: string | null;
   generatedAt: string;
@@ -36,7 +38,7 @@ export async function getTreasuryExecutiveIntelligence():
   Promise<TreasuryExecutiveIntelligenceData> {
 
   const response = await fetch(
-    "http://localhost:3001/api/v1/intelligence/treasury/executive-intelligence",
+    `${API_BASE_URL}/intelligence/treasury/executive-intelligence`
   );
 
   if (!response.ok) {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Panel from "../ui/Panel";
+import { API_BASE_URL } from "../../config/api";
 
 type Threshold = {
   operatorMin: string | null;
@@ -126,7 +127,7 @@ export default function LiquidityEarlyWarning() {
         setError(null);
 
         const response = await fetch(
-          "http://localhost:3001/api/v1/intelligence/liquidity/early-warning",
+          `${API_BASE_URL}/intelligence/liquidity/early-warning`
         );
 
         if (!response.ok) {

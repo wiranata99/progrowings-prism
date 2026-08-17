@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config/api";
+
 export type StrategicAssessment =
   | "Positive"
   | "Neutral"
@@ -53,7 +55,7 @@ export async function getTreasuryStrategicIntelligence():
   Promise<TreasuryStrategicIntelligenceData> {
 
   const response = await fetch(
-    "http://localhost:3001/api/v1/intelligence/treasury/strategic-intelligence",
+    `${API_BASE_URL}/intelligence/treasury/strategic-intelligence`
   );
 
   if (!response.ok) {

@@ -1,6 +1,8 @@
 import type { DashboardData } from "../types/dashboard";
 
-const API = import.meta.env.VITE_API_URL;
+import { API_BASE_URL } from "../config/api";
+
+const API = API_BASE_URL;
 
 export async function getDashboard(): Promise<DashboardData> {
 

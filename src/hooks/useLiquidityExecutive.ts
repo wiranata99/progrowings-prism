@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 
 export type LiquidityExecutiveApiData = {
   riskLevel:
@@ -80,7 +81,7 @@ export function useLiquidityExecutive() {
         setError(null);
 
         const response = await fetch(
-          "http://localhost:3001/api/v1/intelligence/liquidity/executive",
+          `${API_BASE_URL}/intelligence/liquidity/executive`
         );
 
         if (!response.ok) {

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config/api";
 export interface TreasurySummaryItem {
   businessKey: string;
   title: string;
@@ -15,10 +16,6 @@ interface ApiResponse<T> {
   message: string;
   data: T;
 }
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ??
-  "http://localhost:3001/api/v1";
 
 export async function getTreasurySummary(): Promise<
   TreasurySummaryItem[]

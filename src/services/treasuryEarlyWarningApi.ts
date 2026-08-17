@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config/api";
+
 export type TreasuryAlertPriority =
   | "HIGH"
   | "MEDIUM"
@@ -52,7 +54,7 @@ export async function getTreasuryEarlyWarning():
   Promise<TreasuryEarlyWarningData> {
 
   const response = await fetch(
-    "http://localhost:3001/api/v1/intelligence/treasury/early-warning",
+   `${API_BASE_URL}/intelligence/treasury/early-warning`
   );
 
   if (!response.ok) {

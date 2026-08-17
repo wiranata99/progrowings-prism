@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config/api";
 export type TreasuryMomentumCurrency =
   | "ALL"
   | "IDR"
@@ -128,7 +129,7 @@ export async function getTreasuryMomentum(
   }
 
   const response = await fetch(
-  `http://localhost:3001/api/v1/intelligence/treasury/momentum?${params.toString()}`,
+  `${API_BASE_URL}/intelligence/treasury/momentum?${params.toString()}`
 );
 
   if (!response.ok) {

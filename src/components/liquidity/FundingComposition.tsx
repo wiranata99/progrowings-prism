@@ -47,9 +47,7 @@ interface DisplayFundingItem {
   amount: string;
 }
 
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL ??
-  "http://localhost:3001/api/v1";
+import { API_BASE_URL } from "../../config/api";
 
 function formatIDR(value: number) {
   const absValue = Math.abs(value);
@@ -88,7 +86,7 @@ export default function FundingComposition() {
         setError(false);
 
         const response = await fetch(
-          `${API_BASE}/intelligence/liquidity/funding-composition?currency=ALL`,
+          `${API_BASE_URL}/intelligence/liquidity/funding-composition?currency=ALL`,
         );
 
         if (!response.ok) {
