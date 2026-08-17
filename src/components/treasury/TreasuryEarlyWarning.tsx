@@ -1,27 +1,63 @@
+import { useEffect, useState } from "react";
+
 import Panel from "../ui/Panel";
 
-const warnings = [
-  {
-    level: "High",
-    issue: "USD/IDR volatility continues to increase.",
-    impact: "Potential mark-to-market impact on FX positions.",
-    action: "Enhance daily monitoring and stress testing.",
-  },
-  {
-    level: "Medium",
-    issue: "Modified Duration approaching ALCO limit.",
-    impact: "Higher sensitivity to upward interest rate movement.",
-    action: "Review duration positioning and portfolio rebalancing.",
-  },
-  {
-    level: "Low",
-    issue: "Corporate bond allocation gradually increased.",
-    impact: "Slight increase in investment credit exposure.",
-    action: "Review issuer rating and concentration limits.",
-  },
-];
+import {
+  getTreasuryEarlyWarning,
+  type TreasuryEarlyWarningData,
+  type TreasuryAlertPriority,
+} from "../../services/treasuryEarlyWarningApi";
 
 export default function TreasuryEarlyWarning() {
+  const [data, setData] =
+    useState<TreasuryEarlyWarningData | null>(null);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadData() {
+      try {
+        setLoading(true);
+        setError(false);
+
+        const result =
+          await getTreasuryEarlyWarning();
+
+        if (active) {
+          setData(result);
+        }
+      } catch (err) {
+        console.error(
+          "Failed to load Treasury Early Warning",
+          err,
+        );
+
+        if (active) {
+          setData(null);
+          setError(true);
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadData();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const summary = data?.summary;
+
   return (
     <Panel>
 
@@ -52,7 +88,9 @@ export default function TreasuryEarlyWarning() {
           </p>
 
           <p className="mt-2 text-4xl font-bold text-cyan-400">
-            {warnings.length}
+            {loading
+              ? "—"
+              : summary?.activeAlerts ?? 0}
           </p>
 
         </div>
@@ -69,10 +107,21 @@ export default function TreasuryEarlyWarning() {
 
             <tr className="text-left text-xs uppercase tracking-[0.18em] text-slate-500">
 
-              <th className="px-5 py-4">Priority</th>
-              <th className="px-5 py-4">Issue</th>
-              <th className="px-5 py-4">Business Impact</th>
-              <th className="px-5 py-4">Recommended Action</th>
+              <th className="px-5 py-4">
+                Priority
+              </th>
+
+              <th className="px-5 py-4">
+                Issue
+              </th>
+
+              <th className="px-5 py-4">
+                Business Impact
+              </th>
+
+              <th className="px-5 py-4">
+                Recommended Action
+              </th>
 
             </tr>
 
@@ -80,48 +129,102 @@ export default function TreasuryEarlyWarning() {
 
           <tbody>
 
-            {warnings.map((item) => (
+            {loading && (
+              <tr className="border-t border-slate-800">
 
-              <tr
-                key={item.issue}
-                className="border-t border-slate-800 transition hover:bg-slate-800/40"
-              >
+                <td
+                  colSpan={4}
+                  className="px-5 py-12 text-center text-sm text-slate-500"
+                >
+                  Loading Treasury Risk Alerts...
+                </td>
 
-                <td className="px-5 py-5">
+              </tr>
+            )}
 
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      item.level === "High"
-                        ? "bg-rose-500/15 text-rose-300"
-                        : item.level === "Medium"
-                        ? "bg-amber-500/15 text-amber-300"
-                        : "bg-emerald-500/15 text-emerald-300"
-                    }`}
+            {!loading &&
+              data?.alerts.map((item) => (
+
+                <tr
+                  key={item.id}
+                  className="border-t border-slate-800 transition hover:bg-slate-800/40"
+                >
+
+                  <td className="px-5 py-5">
+
+                    <PriorityBadge
+                      priority={item.priority}
+                    />
+
+                  </td>
+
+                  <td className="px-5 font-medium text-white">
+
+                    {item.issue}
+
+                    <div className="mt-2 text-xs font-normal text-slate-500">
+                      {item.metric} ·{" "}
+                      {item.utilization.toFixed(2)}%
+                      utilization
+                    </div>
+
+                  </td>
+
+                  <td className="px-5 leading-7 text-slate-300">
+                    {item.businessImpact}
+                  </td>
+
+                  <td className="px-5">
+
+                    <span className="inline-block rounded-xl bg-cyan-500/10 px-3 py-2 text-xs font-semibold leading-5 text-cyan-300">
+                      {item.recommendedAction}
+                    </span>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            {!loading &&
+              !error &&
+              data?.alerts.length === 0 && (
+
+                <tr className="border-t border-slate-800">
+
+                  <td
+                    colSpan={4}
+                    className="px-5 py-12 text-center"
                   >
-                    {item.level}
-                  </span>
 
-                </td>
+                    <p className="font-semibold text-emerald-400">
+                      No Active Treasury Risk Alerts
+                    </p>
 
-                <td className="px-5 font-medium text-white">
-                  {item.issue}
-                </td>
+                    <p className="mt-2 text-sm text-slate-500">
+                      All monitored Treasury risk indicators remain within healthy thresholds.
+                    </p>
 
-                <td className="px-5 text-slate-300 leading-7">
-                  {item.impact}
-                </td>
+                  </td>
 
-                <td className="px-5">
+                </tr>
 
-                  <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-300">
-                    {item.action}
-                  </span>
+              )}
 
+            {!loading && error && (
+
+              <tr className="border-t border-slate-800">
+
+                <td
+                  colSpan={4}
+                  className="px-5 py-12 text-center text-sm text-slate-500"
+                >
+                  Treasury Early Warning data is not available.
                 </td>
 
               </tr>
 
-            ))}
+            )}
 
           </tbody>
 
@@ -133,41 +236,29 @@ export default function TreasuryEarlyWarning() {
 
       <div className="mt-8 grid gap-5 lg:grid-cols-3">
 
-        <div className="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-5">
+        <SummaryCard
+          title="High"
+          value={summary?.high ?? 0}
+          loading={loading}
+          className="border-rose-500/20 bg-rose-500/5"
+          valueClassName="text-rose-300"
+        />
 
-          <p className="text-xs uppercase tracking-[0.15em] text-slate-500">
-            High
-          </p>
+        <SummaryCard
+          title="Medium"
+          value={summary?.medium ?? 0}
+          loading={loading}
+          className="border-amber-500/20 bg-amber-500/5"
+          valueClassName="text-amber-300"
+        />
 
-          <p className="mt-2 text-3xl font-bold text-rose-300">
-            1
-          </p>
-
-        </div>
-
-        <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5">
-
-          <p className="text-xs uppercase tracking-[0.15em] text-slate-500">
-            Medium
-          </p>
-
-          <p className="mt-2 text-3xl font-bold text-amber-300">
-            1
-          </p>
-
-        </div>
-
-        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-5">
-
-          <p className="text-xs uppercase tracking-[0.15em] text-slate-500">
-            Low
-          </p>
-
-          <p className="mt-2 text-3xl font-bold text-emerald-300">
-            1
-          </p>
-
-        </div>
+        <SummaryCard
+          title="Low"
+          value={summary?.low ?? 0}
+          loading={loading}
+          className="border-emerald-500/20 bg-emerald-500/5"
+          valueClassName="text-emerald-300"
+        />
 
       </div>
 
@@ -175,24 +266,103 @@ export default function TreasuryEarlyWarning() {
 
       <div className="mt-8 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-6">
 
-        <p className="text-xs font-semibold uppercase tracking-[0.20em] text-cyan-400">
-          PRISM Executive Insight
-        </p>
+        <div className="flex items-start justify-between gap-6">
 
-        <p className="mt-4 leading-8 text-slate-300">
+          <div>
 
-          Treasury risk exposure remains within the Bank's approved
-          risk appetite despite increasing market volatility.
-          Current duration positioning, investment concentration,
-          and foreign exchange exposure continue to stay within
-          ALCO-approved limits. Enhanced monitoring is recommended
-          for FX movements and interest rate sensitivity over the
-          coming trading sessions.
+            <p className="text-xs font-semibold uppercase tracking-[0.20em] text-cyan-400">
+              PRISM Executive Insight
+            </p>
 
-        </p>
+            <p className="mt-4 leading-8 text-slate-300">
+
+              {loading
+                ? "Loading Treasury risk assessment..."
+                : error
+                  ? "Treasury risk assessment is currently unavailable."
+                  : data?.executiveAssessment}
+
+            </p>
+
+          </div>
+
+          {!loading && data && (
+
+            <span
+              className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
+                data.overallStatus === "CRITICAL"
+                  ? "bg-rose-500/15 text-rose-300"
+                  : data.overallStatus === "WATCH"
+                    ? "bg-amber-500/15 text-amber-300"
+                    : "bg-emerald-500/15 text-emerald-300"
+              }`}
+            >
+              {data.overallStatus}
+            </span>
+
+          )}
+
+        </div>
 
       </div>
 
     </Panel>
+  );
+}
+
+function PriorityBadge({
+  priority,
+}: {
+  priority: TreasuryAlertPriority;
+}) {
+  const label =
+    priority.charAt(0) +
+    priority.slice(1).toLowerCase();
+
+  const style =
+    priority === "HIGH"
+      ? "bg-rose-500/15 text-rose-300"
+      : priority === "MEDIUM"
+        ? "bg-amber-500/15 text-amber-300"
+        : "bg-emerald-500/15 text-emerald-300";
+
+  return (
+    <span
+      className={`rounded-full px-3 py-1 text-xs font-semibold ${style}`}
+    >
+      {label}
+    </span>
+  );
+}
+
+function SummaryCard({
+  title,
+  value,
+  loading,
+  className,
+  valueClassName,
+}: {
+  title: string;
+  value: number;
+  loading: boolean;
+  className: string;
+  valueClassName: string;
+}) {
+  return (
+    <div
+      className={`rounded-2xl border p-5 ${className}`}
+    >
+
+      <p className="text-xs uppercase tracking-[0.15em] text-slate-500">
+        {title}
+      </p>
+
+      <p
+        className={`mt-2 text-3xl font-bold ${valueClassName}`}
+      >
+        {loading ? "—" : value}
+      </p>
+
+    </div>
   );
 }

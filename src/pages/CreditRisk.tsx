@@ -4,7 +4,7 @@ import SectionHeader from "../components/common/SectionHeader";
 // Hero
 import ExecutiveNarrative from "../components/credit/ExecutiveNarrative";
 import StrategicIntelligence from "../components/credit/StrategicIntelligence";
-import PrismScorecard from "../components/prism/PrismScorecard";
+//import PrismScorecard from "../components/prism/PrismScorecard";
 
 // Executive Overview
 import PortfolioSummary from "../components/credit/PortfolioSummary";
@@ -27,14 +27,11 @@ export default function CreditRisk() {
           description="Executive intelligence workspace for monitoring portfolio quality, identifying emerging risks, and supporting strategic credit decisions."
           badge="Live Monitoring"
         />
-
-        <ExecutiveNarrative />
-
-        <PrismScorecard />
+        
+        {/* <PrismScorecard /> */}
 
         <PortfolioSummary />
-
-        <StrategicIntelligence />
+       
 
         {/* <RiskAppetitePanel /> */}
 
@@ -43,6 +40,10 @@ export default function CreditRisk() {
         <SectorExposure />
 
         <WatchlistTable />
+
+        <StrategicIntelligence />
+
+        <ExecutiveNarrative />
       </div>
     </AppLayout>
   );

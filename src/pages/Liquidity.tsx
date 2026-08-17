@@ -13,8 +13,15 @@ import LiquidityEarlyWarning from "../components/liquidity/LiquidityEarlyWarning
 
 import { usePrismStore } from "../store/prismStore";
 
-import { mapLiquidityExecutive } from "../presentation/mappers/liquidityExecutiveMapper";
 import { mapLiquiditySummary } from "../presentation/mappers/liquiditySummaryMapper";
+
+// V2 Additional for Front & Back Integration
+import { useLiquidityCoreMetrics } from "../hooks/useLiquidityCoreMetrics";
+import { mapLiquidityCoreSummary } from "../presentation/mappers/liquidityCoreSummaryMapper";
+
+// V2 Executive Intelligence API Integration
+import { useLiquidityExecutive } from "../hooks/useLiquidityExecutive";
+import { mapLiquidityExecutiveApi } from "../presentation/mappers/liquidityExecutiveApiMapper";
 
 export default function Liquidity() {
   const snapshot = usePrismStore(
@@ -28,21 +35,62 @@ export default function Liquidity() {
   const liquiditySnapshot =
     snapshot.modules.liquidity;
 
+  const {
+    data: liquidityCoreData,
+  } = useLiquidityCoreMetrics(30);
+
+  const {
+    data: liquidityExecutiveData,
+  } = useLiquidityExecutive();
+
   const executiveData = useMemo(
     () =>
-      mapLiquidityExecutive(
-        liquiditySnapshot
-      ),
-    [liquiditySnapshot]
+      liquidityExecutiveData
+        ? mapLiquidityExecutiveApi(
+            liquidityExecutiveData
+          )
+        : null,
+    [liquidityExecutiveData]
   );
 
-  const summaryData = useMemo(
-    () =>
+  const summaryData = useMemo(() => {
+    const legacy =
       mapLiquiditySummary(
         liquiditySnapshot
-      ),
-    [liquiditySnapshot]
-  );
+      );
+
+    const core =
+      mapLiquidityCoreSummary(
+        liquidityCoreData
+      );
+
+    if (core.length === 0) {
+      return legacy;
+    }
+
+    const coreTitles =
+      new Set(
+        core.map(
+          (item) => item.title
+        )
+      );
+
+    const legacyOnly =
+      legacy.filter(
+        (item) =>
+          !coreTitles.has(
+            item.title
+          )
+      );
+
+    return [
+      ...core,
+      ...legacyOnly,
+    ];
+  }, [
+    liquiditySnapshot,
+    liquidityCoreData,
+  ]);
 
   return (
     <AppLayout>
@@ -55,10 +103,6 @@ export default function Liquidity() {
           badge="Daily Updated"
         />
 
-        <LiquidityExecutivePanel
-          data={executiveData}
-        />
-
         <LiquiditySummary
           data={summaryData}
         />
@@ -66,8 +110,6 @@ export default function Liquidity() {
         <LiquidityMomentum
           snapshot={liquiditySnapshot}
         />
-
-        
 
         <div className="grid gap-6 xl:grid-cols-2">
 
@@ -80,6 +122,10 @@ export default function Liquidity() {
         <LiquidityEarlyWarning />
 
       </div>
+
+      <LiquidityExecutivePanel
+        data={executiveData}
+      />
     </AppLayout>
   );
 }

@@ -1,32 +1,113 @@
+import { useEffect, useState } from "react";
+
 import ExecutivePanel from "../common/ExecutivePanel";
 
+import {
+  getTreasuryExecutiveIntelligence,
+  type TreasuryExecutiveIntelligenceData,
+} from "../../services/treasuryExecutiveIntelligenceApi";
+
 export default function TreasuryExecutivePanel() {
+  const [data, setData] =
+    useState<TreasuryExecutiveIntelligenceData | null>(null);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadData() {
+      try {
+        setLoading(true);
+        setError(false);
+
+        const result =
+          await getTreasuryExecutiveIntelligence();
+
+        if (active) {
+          setData(result);
+        }
+      } catch (err) {
+        console.error(
+          "Failed to load Treasury Executive Intelligence",
+          err,
+        );
+
+        if (active) {
+          setData(null);
+          setError(true);
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadData();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <ExecutivePanel
+        
+        title="Treasury Portfolio Brief"
+        generatedAt="Loading..."
+        summary="Generating Treasury executive intelligence..."
+        attention={[]}
+        recommendations={[]}
+        assessment="Treasury portfolio assessment is being generated."
+        confidence="Loading"
+        status="Loading Treasury Intelligence"
+      />
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <ExecutivePanel
+        
+        title="Treasury Portfolio Brief"
+        generatedAt="Data unavailable"
+        summary="Treasury Executive Intelligence is currently unavailable."
+        attention={[
+          "Unable to retrieve the latest Treasury intelligence data.",
+        ]}
+        recommendations={[
+          "Verify Treasury data availability and backend connectivity.",
+        ]}
+        assessment="Executive assessment cannot currently be generated."
+        confidence="Unavailable"
+        status="Treasury Intelligence Unavailable"
+      />
+    );
+  }
+
   return (
     <ExecutivePanel
       title="Treasury Portfolio Brief"
-      generatedAt="As of 10 Jul 2026 | 08:00 WIB"
 
-      summary="The Bank's Treasury portfolio continues to demonstrate resilient performance despite moderate market volatility. Government Securities remain the primary contributor to portfolio income, supported by favorable market positioning and stable carry returns. Portfolio duration remains well within the ALCO-approved limit, while current valuation risk is considered manageable under the prevailing interest rate environment."
+      generatedAt={data.generatedAt}
 
-      attention={[
-        "Modified Duration has increased moderately compared with the previous month.",
-        "Long-term government bond yields remain volatile and require close monitoring.",
-        "USD/IDR movements may create short-term mark-to-market pressure on FX positions.",
-        "Portfolio concentration remains aligned with the Bank's conservative investment strategy."
-      ]}
+      summary={data.summary}
 
-      recommendations={[
-        "Continue monitoring Indonesia 10-Year Government Bond yield movements.",
-        "Optimize portfolio rebalancing across medium-duration instruments.",
-        "Review duration positioning ahead of the upcoming ALCO meeting.",
-        "Maintain active monitoring of foreign exchange exposure under volatile market conditions."
-      ]}
+      attention={data.attention}
 
-      assessment="Overall Treasury performance remains healthy. Current portfolio positioning, duration exposure, valuation risk, and investment allocation continue to operate within the Bank's approved risk appetite while providing sustainable earnings contribution."
+      recommendations={data.recommendations}
 
-      confidence="Confidence 96%"
+      assessment={data.assessment}
 
-      status="Treasury Portfolio Remains Strong"
+      confidence={data.confidence}
+
+      status={data.status}
     />
   );
 }

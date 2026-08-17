@@ -65,7 +65,7 @@ function MetricRows({
 
       <tr>
         <td className="py-2.5 pl-4 pr-3 text-xs text-slate-500">
-          Contractual Yield
+          Contractual Expense
         </td>
 
         {columns.map(({ key }) => (
@@ -103,7 +103,7 @@ function MetricRows({
   );
 }
 
-export default function PortfolioComposition() {
+export default function TreasuryFundingComposition() {
   const [composition, setComposition] =
     useState<TreasuryComposition | null>(null);
 
@@ -123,7 +123,7 @@ export default function PortfolioComposition() {
         }
       } catch (error) {
         console.error(
-          "Failed to load Treasury Investment Composition",
+          "Failed to load Treasury Funding Composition",
           error,
         );
       } finally {
@@ -140,23 +140,23 @@ export default function PortfolioComposition() {
     };
   }, []);
 
-  const investment =
-    composition?.investment;
+  const funding =
+    composition?.funding;
 
   return (
     <Panel>
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-400">
-            Treasury Investment
+            Treasury Funding
           </p>
 
           <h2 className="mt-2 text-xl font-bold text-white">
-            Investment Composition
+            Funding Composition
           </h2>
 
           <p className="mt-2 text-sm leading-6 text-slate-400">
-            Investment structure by rate type and
+            Funding structure by rate type and
             underlying currency.
           </p>
         </div>
@@ -166,9 +166,9 @@ export default function PortfolioComposition() {
         </div>
       </div>
 
-      {!investment ? (
+      {!funding ? (
         <div className="mt-6 rounded-xl border border-slate-800 bg-slate-950/40 p-6 text-center text-sm text-slate-500">
-          Treasury investment data is not available.
+          Treasury funding data is not available.
         </div>
       ) : (
         <div className="mt-6 overflow-hidden rounded-xl border border-slate-800 bg-slate-950/30">
@@ -204,7 +204,7 @@ export default function PortfolioComposition() {
                 </tr>
 
                 <MetricRows
-                  data={investment.fixed}
+                  data={funding.fixed}
                 />
 
                 <tr className="border-t border-slate-800 bg-cyan-500/[0.04]">
@@ -217,7 +217,7 @@ export default function PortfolioComposition() {
                 </tr>
 
                 <MetricRows
-                  data={investment.floating}
+                  data={funding.floating}
                 />
 
                 <tr className="border-t border-cyan-500/20 bg-cyan-500/[0.07]">
@@ -230,7 +230,7 @@ export default function PortfolioComposition() {
                 </tr>
 
                 <MetricRows
-                  data={investment.total}
+                  data={funding.total}
                 />
               </tbody>
             </table>

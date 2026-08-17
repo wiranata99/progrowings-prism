@@ -19,28 +19,52 @@ import Panel from "../ui/Panel";
 import type {
   LiquidityMetricKey,
   LiquidityMetricUnit,
-  LiquidityMomentumPoint,
 } from "../../types/liquidity";
 
 import type { PrismModuleSnapshot } from "../../types/prism";
 
 import {
-  liquidityMomentumMapper,
-  type LiquidityMomentumPeriod,
-} from "../../presentation/mappers/liquidityMomentumMapper";
+  getLiquidityCoreMetrics,
+  type LiquidityCoreMetricsData,
+  type LiquidityCoreMetricsPoint,
+} from "../../services/liquidityCoreMetricsApi";
 
 interface LiquidityMomentumProps {
   snapshot: PrismModuleSnapshot;
 }
 
+type LiquidityMomentumPeriod =
+  | 5
+  | 10
+  | 20
+  | 30;
+
+interface ChartPoint {
+  date: string;
+  fullDate: string;
+  value: number;
+  components: Record<string, number>;
+}
+
+interface MetricViewModel {
+  key: LiquidityMetricKey;
+  label: string;
+  unit: LiquidityMetricUnit;
+  current: number | null;
+  change: number | null;
+  status: string;
+  points: ChartPoint[];
+}
+
 interface TooltipPayloadItem {
   value?: number;
-  payload?: LiquidityMomentumPoint;
+  payload?: ChartPoint;
 }
 
 interface MomentumTooltipProps {
   active?: boolean;
   payload?: TooltipPayloadItem[];
+  metricKey: LiquidityMetricKey;
   unit: LiquidityMetricUnit;
   label: string;
 }
@@ -52,16 +76,110 @@ const periods: LiquidityMomentumPeriod[] = [
   30,
 ];
 
-const metricColors: Record<
+const metricConfig: Record<
   LiquidityMetricKey,
-  string
+  {
+    label: string;
+    unit: LiquidityMetricUnit;
+    color: string;
+  }
 > = {
-  lcr: "#06b6d4",
-  nsfrDaily: "#10b981",
-  alDpk: "#3b82f6",
-  casa: "#f59e0b",
-  excessLiquidity: "#a855f7",
+  lcr: {
+    label: "LCR",
+    unit: "percentage",
+    color: "#06b6d4",
+  },
+
+  nsfrDaily: {
+    label: "NSFR Daily",
+    unit: "percentage",
+    color: "#10b981",
+  },
+
+  alDpk: {
+    label: "AL / DPK",
+    unit: "percentage",
+    color: "#3b82f6",
+  },
+
+  casa: {
+    label: "CASA",
+    unit: "percentage",
+    color: "#f59e0b",
+  },
+
+  excessLiquidity: {
+    label: "Excess Liquidity",
+    unit: "currency",
+    color: "#a855f7",
+  },
 };
+
+const componentLabels: Record<
+  LiquidityMetricKey,
+  Record<string, string>
+> = {
+  lcr: {
+    hqla: "HQLA",
+    netCashOutflow: "Net Cash Outflow",
+  },
+
+  nsfrDaily: {
+    availableStableFunding:
+      "Available Stable Funding",
+    requiredStableFunding:
+      "Required Stable Funding",
+  },
+
+  alDpk: {
+    liquidAssets: "Liquid Assets",
+    thirdPartyFunds: "Third Party Funds",
+  },
+
+  casa: {
+    currentAccount: "Current Account",
+    savingsAccount: "Savings Account",
+    thirdPartyFunds: "Third Party Funds",
+  },
+
+  excessLiquidity: {
+    availableLiquidity:
+      "Available Liquidity",
+    requiredLiquidity:
+      "Required Liquidity",
+  },
+};
+
+function formatCurrency(
+  value: number
+): string {
+  const absolute = Math.abs(value);
+
+  if (absolute >= 1_000_000_000_000) {
+    return `Rp ${(value / 1_000_000_000_000).toFixed(
+      2
+    )} T`;
+  }
+
+  if (absolute >= 1_000_000_000) {
+    return `Rp ${(value / 1_000_000_000).toFixed(
+      2
+    )} B`;
+  }
+
+  if (absolute >= 1_000_000) {
+    return `Rp ${(value / 1_000_000).toFixed(
+      2
+    )} M`;
+  }
+
+  return `Rp ${value.toLocaleString(
+    "en-US",
+    {
+      maximumFractionDigits: 0,
+    }
+  )}`;
+}
 
 function formatMetricValue(
   value: number | null,
@@ -75,13 +193,7 @@ function formatMetricValue(
     return `${value.toFixed(2)}%`;
   }
 
-  if (Math.abs(value) >= 1000) {
-    return `Rp ${(value / 1000).toFixed(
-      2
-    )} T`;
-  }
-
-  return `Rp ${value.toFixed(2)} B`;
+  return formatCurrency(value);
 }
 
 function formatChange(
@@ -100,15 +212,72 @@ function formatChange(
     )} pts`;
   }
 
-  if (Math.abs(value) >= 1000) {
-    return `${sign}Rp ${(
-      value / 1000
-    ).toFixed(2)} T`;
-  }
+  return `${sign}${formatCurrency(value)}`;
+}
 
-  return `${sign}Rp ${value.toFixed(
-    2
-  )} B`;
+function formatDate(
+  value: string
+): {
+  short: string;
+  full: string;
+} {
+  const date = new Date(value);
+
+  return {
+    short: date.toLocaleDateString(
+      "en-US",
+      {
+        month: "short",
+        day: "2-digit",
+      }
+    ),
+
+    full: date.toLocaleDateString(
+      "en-US",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }
+    ),
+  };
+}
+
+function getStatus(
+  key: LiquidityMetricKey,
+  value: number
+): string {
+  switch (key) {
+    case "lcr":
+      if (value < 100) return "Critical";
+      if (value < 110) return "Warning";
+      if (value < 120) return "Watch";
+      return "Healthy";
+
+    case "nsfrDaily":
+      if (value < 100) return "Critical";
+      if (value < 105) return "Warning";
+      if (value < 110) return "Watch";
+      return "Healthy";
+
+    case "alDpk":
+      if (value < 10) return "Critical";
+      if (value < 15) return "Warning";
+      if (value < 20) return "Watch";
+      return "Healthy";
+
+    case "casa":
+      if (value < 40) return "Warning";
+      if (value < 50) return "Watch";
+      return "Healthy";
+
+    case "excessLiquidity":
+      if (value < 0) return "Critical";
+      return "Healthy";
+
+    default:
+      return "Healthy";
+  }
 }
 
 function getStatusTextClass(
@@ -144,9 +313,70 @@ function getTrendTextClass(
     : "text-rose-400";
 }
 
+function buildMetric(
+  key: LiquidityMetricKey,
+  data: LiquidityCoreMetricsData
+): MetricViewModel {
+  const config = metricConfig[key];
+
+  const points = data.history
+    .map((row: LiquidityCoreMetricsPoint) => {
+      const metric = row.metrics[key];
+
+      if (!metric) {
+        return null;
+      }
+
+      const formattedDate = formatDate(
+        row.reportingDate
+      );
+
+      return {
+        date: formattedDate.short,
+        fullDate: formattedDate.full,
+        value: metric.value,
+        components:
+          metric.components ?? {},
+      };
+    })
+    .filter(
+      (point): point is ChartPoint =>
+        point !== null
+    );
+
+  const current =
+    data.current?.metrics[key]?.value ??
+    null;
+
+  const first =
+    points.length > 0
+      ? points[0].value
+      : null;
+
+  const change =
+    current !== null &&
+    first !== null
+      ? current - first
+      : null;
+
+  return {
+    key,
+    label: config.label,
+    unit: config.unit,
+    current,
+    change,
+    status:
+      current === null
+        ? "Unavailable"
+        : getStatus(key, current),
+    points,
+  };
+}
+
 function MomentumTooltip({
   active,
   payload,
+  metricKey,
   unit,
   label,
 }: MomentumTooltipProps) {
@@ -168,14 +398,21 @@ function MomentumTooltip({
     return null;
   }
 
+  const labels =
+    componentLabels[metricKey];
+
+  const components = Object.entries(
+    point.components ?? {}
+  );
+
   return (
-    <div className="min-w-[190px] rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 shadow-2xl">
+    <div className="min-w-[260px] rounded-xl border border-slate-700 bg-slate-950 px-4 py-4 shadow-2xl">
       <p className="text-xs font-medium text-slate-400">
         {point.fullDate}
       </p>
 
-      <div className="mt-3 flex items-center justify-between gap-6">
-        <span className="text-sm text-slate-300">
+      <div className="mt-3 flex items-center justify-between gap-8">
+        <span className="text-sm font-medium text-slate-300">
           {label}
         </span>
 
@@ -186,47 +423,137 @@ function MomentumTooltip({
           )}
         </span>
       </div>
+
+      {components.length > 0 && (
+        <>
+          <div className="my-3 border-t border-slate-800" />
+
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            Underlying Components
+          </p>
+
+          <div className="space-y-2">
+            {components.map(
+              ([key, componentValue]) => (
+                <div
+                  key={key}
+                  className="flex items-center justify-between gap-8"
+                >
+                  <span className="text-xs text-slate-400">
+                    {labels[key] ?? key}
+                  </span>
+
+                  <span className="text-xs font-medium text-slate-200">
+                    {formatCurrency(
+                      componentValue
+                    )}
+                  </span>
+                </div>
+              )
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
 export default function LiquidityMomentum({
-  snapshot,
+  snapshot: _snapshot,
 }: LiquidityMomentumProps) {
   const [period, setPeriod] =
     useState<LiquidityMomentumPeriod>(20);
 
-  const [selectedMetricKey, setSelectedMetricKey] =
+  const [
+    selectedMetricKey,
+    setSelectedMetricKey,
+  ] =
     useState<LiquidityMetricKey>("lcr");
 
-  const viewModel = useMemo(
-    () =>
-      liquidityMomentumMapper(
-        snapshot,
-        period
-      ),
-    [snapshot, period]
-  );
+  const [data, setData] =
+    useState<LiquidityCoreMetricsData | null>(
+      null
+    );
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadData() {
+      try {
+        setLoading(true);
+        setError(false);
+
+        const result =
+          await getLiquidityCoreMetrics(
+            period
+          );
+
+        if (active) {
+          setData(result);
+        }
+      } catch (err) {
+        console.error(
+          "Failed to load Liquidity Core Metrics",
+          err
+        );
+
+        if (active) {
+          setError(true);
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadData();
+
+    return () => {
+      active = false;
+    };
+  }, [period]);
+
+  const metrics = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    const keys: LiquidityMetricKey[] = [
+      "lcr",
+      "nsfrDaily",
+      "alDpk",
+      "casa",
+      "excessLiquidity",
+    ];
+
+    return keys.map((key) =>
+      buildMetric(key, data)
+    );
+  }, [data]);
 
   const selectedMetric = useMemo(
     () =>
-      viewModel.metrics.find(
+      metrics.find(
         (metric) =>
           metric.key === selectedMetricKey
-      ) ?? viewModel.metrics[0],
-    [viewModel.metrics, selectedMetricKey]
+      ) ?? metrics[0],
+    [metrics, selectedMetricKey]
   );
 
   useEffect(() => {
-    if (!selectedMetric) {
-      return;
-    }
-
     if (
+      selectedMetric &&
       selectedMetric.current === null
     ) {
       const firstAvailable =
-        viewModel.metrics.find(
+        metrics.find(
           (metric) =>
             metric.current !== null
         );
@@ -237,7 +564,7 @@ export default function LiquidityMomentum({
         );
       }
     }
-  }, [selectedMetric, viewModel.metrics]);
+  }, [selectedMetric, metrics]);
 
   const headerAction = (
     <div className="flex items-center gap-2">
@@ -258,7 +585,25 @@ export default function LiquidityMomentum({
     </div>
   );
 
-  if (!selectedMetric) {
+  if (loading && !data) {
+    return (
+      <Panel
+        title="Liquidity Momentum"
+        subtitle="Select an indicator to inspect its historical movement."
+        headerAction={headerAction}
+      >
+        <div className="flex h-64 items-center justify-center text-sm text-slate-500">
+          Loading liquidity momentum...
+        </div>
+      </Panel>
+    );
+  }
+
+  if (
+    error ||
+    !data ||
+    !selectedMetric
+  ) {
     return (
       <Panel
         title="Liquidity Momentum"
@@ -266,7 +611,7 @@ export default function LiquidityMomentum({
         headerAction={headerAction}
       >
         <div className="flex h-64 items-center justify-center text-sm text-slate-500">
-          No historical liquidity data
+          Liquidity momentum data is not
           available.
         </div>
       </Panel>
@@ -280,101 +625,101 @@ export default function LiquidityMomentum({
       headerAction={headerAction}
     >
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-        {viewModel.metrics.map(
-          (metric) => {
-            const isSelected =
-              metric.key ===
-              selectedMetric.key;
+        {metrics.map((metric) => {
+          const isSelected =
+            metric.key ===
+            selectedMetric.key;
 
-            return (
-              <button
-                key={metric.key}
-                type="button"
-                onClick={() =>
-                  setSelectedMetricKey(
-                    metric.key
-                  )
-                }
-                className={`rounded-2xl border p-4 text-left transition-all duration-300 ${
-                  isSelected
-                    ? "border-cyan-500/60 bg-cyan-500/5 shadow-lg shadow-cyan-500/10"
-                    : "border-slate-800 bg-slate-950 hover:-translate-y-0.5 hover:border-slate-700"
-                }`}
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
-                      {metric.label}
-                    </p>
+          return (
+            <button
+              key={metric.key}
+              type="button"
+              onClick={() =>
+                setSelectedMetricKey(
+                  metric.key
+                )
+              }
+              className={`rounded-2xl border p-4 text-left transition-all duration-300 ${
+                isSelected
+                  ? "border-cyan-500/60 bg-cyan-500/5 shadow-lg shadow-cyan-500/10"
+                  : "border-slate-800 bg-slate-950 hover:-translate-y-0.5 hover:border-slate-700"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+                    {metric.label}
+                  </p>
 
-                    <p className="mt-2 text-xl font-semibold text-white">
-                      {formatMetricValue(
-                        metric.current,
-                        metric.unit
-                      )}
-                    </p>
-                  </div>
-
-                  <span
-                    className={`text-[10px] font-semibold ${getStatusTextClass(
-                      metric.status
-                    )}`}
-                  >
-                    {metric.status}
-                  </span>
-                </div>
-
-                <div className="mt-3 h-14">
-                  <ResponsiveContainer
-                    width="100%"
-                    height="100%"
-                  >
-                    <LineChart
-                      data={metric.points}
-                      margin={{
-                        top: 4,
-                        right: 2,
-                        bottom: 4,
-                        left: 2,
-                      }}
-                    >
-                      <Line
-                        type="monotone"
-                        dataKey="value"
-                        stroke={
-                          metricColors[
-                            metric.key
-                          ]
-                        }
-                        strokeWidth={2}
-                        dot={false}
-                        isAnimationActive={false}
-                        connectNulls
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-
-                <div className="mt-2 flex items-center justify-between">
-                  <span className="text-[10px] uppercase tracking-wider text-slate-600">
-                    {period}D Change
-                  </span>
-
-                  <span
-                    className={`text-xs font-semibold ${getTrendTextClass(
-                      metric.change
-                    )}`}
-                  >
-                    {formatChange(
-                      metric.change,
+                  <p className="mt-2 text-xl font-semibold text-white">
+                    {formatMetricValue(
+                      metric.current,
                       metric.unit
                     )}
-                  </span>
+                  </p>
                 </div>
-              </button>
-            );
-          }
-        )}
+
+                <span
+                  className={`text-[10px] font-semibold ${getStatusTextClass(
+                    metric.status
+                  )}`}
+                >
+                  {metric.status}
+                </span>
+              </div>
+
+              <div className="mt-3 h-14">
+                <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+                >
+                  <LineChart
+                    data={metric.points}
+                    margin={{
+                      top: 4,
+                      right: 2,
+                      bottom: 4,
+                      left: 2,
+                    }}
+                  >
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke={
+                        metricConfig[
+                          metric.key
+                        ].color
+                      }
+                      strokeWidth={2}
+                      dot={false}
+                      isAnimationActive={
+                        false
+                      }
+                      connectNulls
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="mt-2 flex items-center justify-between">
+                <span className="text-[10px] uppercase tracking-wider text-slate-600">
+                  {period}D Change
+                </span>
+
+                <span
+                  className={`text-xs font-semibold ${getTrendTextClass(
+                    metric.change
+                  )}`}
+                >
+                  {formatChange(
+                    metric.change,
+                    metric.unit
+                  )}
+                </span>
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950 p-5">
@@ -480,21 +825,18 @@ export default function LiquidityMomentum({
                     ? `${Number(
                         value
                       ).toFixed(0)}%`
-                    : Number(value) >=
-                      1000
-                    ? `${(
-                        Number(value) /
-                        1000
-                      ).toFixed(1)}T`
-                    : `${Number(
-                        value
-                      ).toFixed(0)}B`
+                    : formatCurrency(
+                        Number(value)
+                      )
                 }
               />
 
               <Tooltip
                 content={
                   <MomentumTooltip
+                    metricKey={
+                      selectedMetric.key
+                    }
                     unit={
                       selectedMetric.unit
                     }
@@ -509,9 +851,9 @@ export default function LiquidityMomentum({
                 type="monotone"
                 dataKey="value"
                 stroke={
-                  metricColors[
+                  metricConfig[
                     selectedMetric.key
-                  ]
+                  ].color
                 }
                 strokeWidth={3}
                 dot={false}

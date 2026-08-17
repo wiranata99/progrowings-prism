@@ -33,11 +33,8 @@ export default function Profitability() {
           title="Enterprise Profitability Performance"
           description="Comprehensive monitoring of profitability, financial performance, earnings quality, executive health assessment, and income statement movement."
           badge="Dynamic Snapshot"
-        />
-
-        <ProfitabilityExecutivePanel data={executive} />
-
-        <StrategicIntelligence data={strategicIntelligence} />
+        /> 
+       
 
         <ProfitabilityHealthScore data={health} />
 
@@ -46,6 +43,11 @@ export default function Profitability() {
         <ProfitDriverAnalysis />
 
         <ProfitabilityEarlyWarning />
+
+        <StrategicIntelligence data={strategicIntelligence} />
+
+        <ProfitabilityExecutivePanel data={executive} />
+
       </div>
     </AppLayout>
   );

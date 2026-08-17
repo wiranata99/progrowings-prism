@@ -10,7 +10,7 @@ import Treasury from "../pages/Treasury";
 import UploadData from "../pages/UploadData";
 import SnapshotViewer from "../pages/SnapshotViewer";
 
-// import StressTesting from "../pages/StressTesting";
+import StressTesting from "../pages/StressTesting";
 
 export default function AppRouter() {
   return (
@@ -53,6 +53,11 @@ export default function AppRouter() {
       <Route
         path="/operational"
         element={<Operational />}
+      />
+
+      <Route
+        path="/stress-testing"
+        element={<StressTesting />}
       />
 
       <Route
