@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "../config/api";
 import type { MetricStatus } from "../types/metric";
 interface ApiResponse<T>{success:boolean;message:string;data:T}
-export interface OperationalMetric{key:string;label:string;value:number;movement:number|null;target:number|null;unit:string;status:MetricStatus}
+export interface OperationalMetric{key:string;label:string;value:number;movement:number|null;previousEomValue:number|null;target:number|null;unit:string;status:MetricStatus}
 export interface OperationalRisk{id:number;title:string;owner:string;likelihood:number;impact:number;score:number;level:"Low"|"Medium"|"High"|"Extreme";exposure:number}
 export interface OperationalControl{name:string;score:number;status:MetricStatus}
 export interface OperationalIssue{id:number;risk:string;owner:string;exposure:number;dueDays:number;status:string;priority:string}
