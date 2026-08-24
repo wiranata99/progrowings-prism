@@ -8,7 +8,7 @@ import type { ProfitabilityExecutiveViewModel } from "../presentation/mappers/pr
 interface ApiResponse<T> { success: boolean; message: string; data: T; }
 interface HealthResponse {
   reportingDate: string;
-  metrics: Array<{ key: string; label: string; value: number; movement: number | null; target: number | null; status: MetricStatus; expenseMetric: boolean; }>;
+  metrics: Array<{ key: string; label: string; value: number; movement: number | null; lastEomValue: number | null; target: number | null; status: MetricStatus; expenseMetric: boolean; }>;
 }
 interface MovementResponse {
   reportingDate: string;
@@ -49,7 +49,7 @@ export async function getProfitabilityHealthScore(): Promise<ProfitabilityHealth
       movement: metric.movement,
       movementLabel: signed(metric.movement, "%"),
       targetLabel: metric.target === null ? "-" : `${metric.expenseMetric ? "<" : ">"} ${metric.target.toFixed(2)}%`,
-      lastEomValue: "-",
+      lastEomValue: metric.lastEomValue === null ? "-" : `${metric.lastEomValue.toFixed(2)}%`,
       status: metric.status,
       progress: Math.min(100, metric.status === "Healthy" ? 92 : metric.status === "Watch" ? 75 : metric.status === "Warning" ? 55 : 30),
       expenseMetric: metric.expenseMetric,
