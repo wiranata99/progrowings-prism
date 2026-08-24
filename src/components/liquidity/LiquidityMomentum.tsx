@@ -21,17 +21,11 @@ import type {
   LiquidityMetricUnit,
 } from "../../types/liquidity";
 
-import type { PrismModuleSnapshot } from "../../types/prism";
-
 import {
   getLiquidityCoreMetrics,
   type LiquidityCoreMetricsData,
   type LiquidityCoreMetricsPoint,
 } from "../../services/liquidityCoreMetricsApi";
-
-interface LiquidityMomentumProps {
-  snapshot: PrismModuleSnapshot;
-}
 
 type LiquidityMomentumPeriod =
   | 5
@@ -458,9 +452,7 @@ function MomentumTooltip({
   );
 }
 
-export default function LiquidityMomentum({
-  snapshot: _snapshot,
-}: LiquidityMomentumProps) {
+export default function LiquidityMomentum() {
   const [period, setPeriod] =
     useState<LiquidityMomentumPeriod>(20);
 
