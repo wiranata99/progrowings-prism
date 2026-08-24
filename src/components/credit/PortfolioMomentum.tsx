@@ -182,7 +182,7 @@ export default function PortfolioMomentum() {
           )}
           nplAmount={formatAmount(
             momentumData.corporate
-              .nplAmmount
+              .nplAmount
           )}
           ratio={formatRatio(
             momentumData.corporate.ratio
@@ -219,3 +219,5 @@ export default function PortfolioMomentum() {
     </section>
   );
 }
+
+// Credit momentum is sourced from the production API.
