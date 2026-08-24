@@ -11,10 +11,6 @@ import FundingComposition from "../components/liquidity/FundingComposition";
 import LiquidityGap from "../components/liquidity/LiquidityGap";
 import LiquidityEarlyWarning from "../components/liquidity/LiquidityEarlyWarning";
 
-import { usePrismStore } from "../store/prismStore";
-
-import { mapLiquiditySummary } from "../presentation/mappers/liquiditySummaryMapper";
-
 // V2 Additional for Front & Back Integration
 import { useLiquidityCoreMetrics } from "../hooks/useLiquidityCoreMetrics";
 import { mapLiquidityCoreSummary } from "../presentation/mappers/liquidityCoreSummaryMapper";
@@ -24,19 +20,10 @@ import { useLiquidityExecutive } from "../hooks/useLiquidityExecutive";
 import { mapLiquidityExecutiveApi } from "../presentation/mappers/liquidityExecutiveApiMapper";
 
 export default function Liquidity() {
-  const snapshot = usePrismStore(
-    (state) => state.snapshot
-  );
-
-  if (!snapshot) {
-    return null;
-  }
-
-  const liquiditySnapshot =
-    snapshot.modules.liquidity;
-
   const {
     data: liquidityCoreData,
+    loading: liquidityCoreLoading,
+    error: liquidityCoreError,
   } = useLiquidityCoreMetrics(30);
 
   const {
@@ -54,43 +41,10 @@ export default function Liquidity() {
   );
 
   const summaryData = useMemo(() => {
-    const legacy =
-      mapLiquiditySummary(
-        liquiditySnapshot
-      );
-
-    const core =
-      mapLiquidityCoreSummary(
-        liquidityCoreData
-      );
-
-    if (core.length === 0) {
-      return legacy;
-    }
-
-    const coreTitles =
-      new Set(
-        core.map(
-          (item) => item.title
-        )
-      );
-
-    const legacyOnly =
-      legacy.filter(
-        (item) =>
-          !coreTitles.has(
-            item.title
-          )
-      );
-
-    return [
-      ...core,
-      ...legacyOnly,
-    ];
-  }, [
-    liquiditySnapshot,
-    liquidityCoreData,
-  ]);
+    return mapLiquidityCoreSummary(
+      liquidityCoreData
+    );
+  }, [liquidityCoreData]);
 
   return (
     <AppLayout>
@@ -103,13 +57,19 @@ export default function Liquidity() {
           badge="Daily Updated"
         />
 
-        <LiquiditySummary
-          data={summaryData}
-        />
+        {liquidityCoreError && (
+          <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-5 py-4 text-sm text-rose-200">
+            Liquidity data is temporarily unavailable. Please verify the PRISM API and database connection.
+          </div>
+        )}
 
-        <LiquidityMomentum
-          snapshot={liquiditySnapshot}
-        />
+        {!liquidityCoreLoading && (
+          <LiquiditySummary
+            data={summaryData}
+          />
+        )}
+
+        <LiquidityMomentum />
 
         <div className="grid gap-6 xl:grid-cols-2">
 
