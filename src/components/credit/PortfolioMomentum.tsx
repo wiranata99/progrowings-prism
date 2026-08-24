@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -7,7 +8,8 @@ import PortfolioSegmentCard from "./PortfolioSegmentCard";
 import PortfolioMomentumHeader from "./PortfolioMomentumHeader";
 import PortfolioMomentumChart from "./PortfolioMomentumChart";
 
-import { usePrismStore } from "../../store/prismStore";
+import { getCreditMomentum } from "../../services/creditMomentumApi";
+import type { DatabaseRow } from "../../data/database/DatabaseReader";
 
 import {
   mapCreditMomentum,
@@ -65,19 +67,35 @@ function filterByPeriod(
 export default function PortfolioMomentum() {
   const [period, setPeriod] =
     useState<Period>(12);
+  const [history, setHistory] =
+    useState<DatabaseRow[]>([]);
+  const [isLoading, setIsLoading] =
+    useState(true);
+  const [hasError, setHasError] =
+    useState(false);
 
-  const snapshot = usePrismStore(
-    (state) => state.snapshot
-  );
+  useEffect(() => {
+    const controller = new AbortController();
 
-  const history =
-    (
-      snapshot?.modules.credit.analytics
-        ?.history as Record<
-        string,
-        unknown
-      >[]
-    ) ?? [];
+    getCreditMomentum(controller.signal)
+      .then((data) => {
+        setHistory(data);
+        setHasError(false);
+      })
+      .catch((error: unknown) => {
+        if (
+          error instanceof DOMException &&
+          error.name === "AbortError"
+        ) {
+          return;
+        }
+
+        setHasError(true);
+      })
+      .finally(() => setIsLoading(false));
+
+    return () => controller.abort();
+  }, []);
 
   const momentumData = useMemo(
     () => mapCreditMomentum(history),
@@ -111,6 +129,20 @@ export default function PortfolioMomentum() {
     ratios.length > 0
       ? Math.min(...ratios)
       : 0;
+
+  if (isLoading) {
+    return (
+      <section className="h-[620px] animate-pulse rounded-3xl border border-slate-800 bg-slate-900" />
+    );
+  }
+
+  if (hasError || momentumData.history.length === 0) {
+    return (
+      <section className="rounded-3xl border border-amber-500/30 bg-amber-500/10 p-6 text-sm text-amber-200">
+        Credit portfolio momentum is temporarily unavailable. Please verify the production API connection and reporting history.
+      </section>
+    );
+  }
 
   return (
     <section className="space-y-6">
@@ -150,7 +182,7 @@ export default function PortfolioMomentum() {
           )}
           nplAmount={formatAmount(
             momentumData.corporate
-              .nplAmount
+              .nplAmmount
           )}
           ratio={formatRatio(
             momentumData.corporate.ratio
