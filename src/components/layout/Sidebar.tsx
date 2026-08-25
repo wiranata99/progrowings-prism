@@ -13,7 +13,9 @@ import {
 } from "lucide-react";
 
 import type { LucideIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { API_BASE_URL } from "../../config/api";
 
 interface SidebarProps {
   onClose: () => void;
@@ -23,6 +25,7 @@ interface MenuItem {
   name: string;
   icon: LucideIcon;
   path: string;
+  disabled?: boolean;
 }
 
 interface MenuGroup {
@@ -82,7 +85,8 @@ const executiveMenu: MenuGroup[] = [
       {
         name: "Executive Reports",
         icon: FileText,
-        path: "#",
+        path: "/reports",
+        disabled: true,
       },
     ],
   },
@@ -102,13 +106,29 @@ const executiveMenu: MenuGroup[] = [
       {
         name: "Settings",
         icon: Settings,
-        path: "#",
+        path: "/settings",
+        disabled: true,
       },   
     ],
   },
 ];
 
 export default function Sidebar({ onClose }: SidebarProps) {
+  const [servicesOnline, setServicesOnline] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch(`${API_BASE_URL}/health`, { signal: controller.signal })
+      .then((response) => setServicesOnline(response.ok))
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setServicesOnline(false);
+      });
+
+    return () => controller.abort();
+  }, []);
+
   return (
     <aside className="flex h-screen w-72 flex-col border-r border-slate-800 bg-[#08111E]">
       <div className="border-b border-slate-800 px-8 py-8">
@@ -131,6 +151,22 @@ export default function Sidebar({ onClose }: SidebarProps) {
             <div className="space-y-1">
               {group.items.map((item) => {
                 const Icon = item.icon;
+
+                if (item.disabled) {
+                  return (
+                    <div
+                      key={item.name}
+                      aria-disabled="true"
+                      className="flex cursor-not-allowed items-center gap-3 rounded-xl px-4 py-3 text-slate-600"
+                    >
+                      <Icon size={18} />
+                      <span className="font-medium">{item.name}</span>
+                      <span className="ml-auto text-[10px] font-semibold uppercase tracking-wider">
+                        Soon
+                      </span>
+                    </div>
+                  );
+                }
 
                 return (
                   <NavLink
@@ -170,10 +206,30 @@ export default function Sidebar({ onClose }: SidebarProps) {
       <div className="border-t border-slate-800 p-6">
         <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
           <div className="flex items-center gap-2">
-            <div className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+            <div
+              className={`h-2.5 w-2.5 rounded-full ${
+                servicesOnline === true
+                  ? "bg-emerald-400"
+                  : servicesOnline === false
+                    ? "bg-rose-400"
+                    : "bg-amber-400"
+              }`}
+            />
 
-            <span className="text-sm font-medium text-emerald-400">
-              All Services Online
+            <span
+              className={`text-sm font-medium ${
+                servicesOnline === true
+                  ? "text-emerald-400"
+                  : servicesOnline === false
+                    ? "text-rose-400"
+                    : "text-amber-400"
+              }`}
+            >
+              {servicesOnline === true
+                ? "All Services Online"
+                : servicesOnline === false
+                  ? "Service Unavailable"
+                  : "Checking Services"}
             </span>
           </div>
 
