@@ -2,6 +2,7 @@ import {
   Activity,
   BarChart3,
   Braces,
+  Calculator,
   DollarSign,
   Droplets,
   FileText,
@@ -72,20 +73,25 @@ const executiveMenu: MenuGroup[] = [
     ],
   },
   {
-    title: "ANALYTICS",
-    items: [
-      {
-        name: "Stress Testing",
-        icon: Zap,
-        path: "/stress-testing",
-      },
-      {
-        name: "Executive Reports",
-        icon: FileText,
-        path: "#",
-      },
-    ],
-  },
+  title: "ANALYTICS",
+  items: [
+    {
+      name: "Stress Testing",
+      icon: Zap,
+      path: "/stress-testing",
+    },
+    {
+      name: "Individual CKPN",
+      icon: Calculator,
+      path: "/ckpn-individual",
+    },
+    {
+      name: "Executive Reports",
+      icon: FileText,
+      path: "#",
+    },
+  ],
+},
   {
     title: "SYSTEM",
     items: [

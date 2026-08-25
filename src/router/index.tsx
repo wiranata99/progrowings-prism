@@ -11,6 +11,7 @@ import UploadData from "../pages/UploadData";
 import SnapshotViewer from "../pages/SnapshotViewer";
 
 import StressTesting from "../pages/StressTesting";
+import CKPNIndividual from "../pages/CKPNIndividual";
 
 export default function AppRouter() {
   return (
@@ -58,6 +59,11 @@ export default function AppRouter() {
       <Route
         path="/stress-testing"
         element={<StressTesting />}
+      />
+
+      <Route
+        path="/ckpn-individual"
+        element={<CKPNIndividual />}
       />
 
       <Route
