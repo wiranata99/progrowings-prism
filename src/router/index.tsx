@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Dashboard } from "../pages/Dashboard";
 import CreditRisk from "../pages/CreditRisk";
 import Liquidity from "../pages/Liquidity";
-import MarketRisk from "../pages/MarketRisk";
 import Operational from "../pages/Operational";
 import Profitability from "../pages/Profitability";
 import Treasury from "../pages/Treasury";
@@ -42,7 +41,7 @@ export default function AppRouter() {
 
       <Route
         path="/market-risk"
-        element={<MarketRisk />}
+        element={<Navigate to="/treasury" replace />}
       />
 
       <Route
