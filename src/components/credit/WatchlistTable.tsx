@@ -5,6 +5,8 @@ import {
   type CreditWatchlistItem,
 } from "../../services/creditMomentumApi";
 
+import DebtorHoverDetail from "./DebtorHoverDetail";
+
 const priorityStyle: Record<string, string> = {
   High: "bg-red-500/20 text-red-300 border border-red-500/40",
   Medium: "bg-amber-500/20 text-amber-300 border border-amber-500/40",
@@ -77,7 +79,7 @@ export default function WatchlistTable() {
       )}
 
       {!isLoading && !isUnavailable && (
-        <div className="mt-8 overflow-hidden rounded-2xl border border-slate-800">
+        <div className="mt-8 overflow-x-auto rounded-2xl border border-slate-800">
           <table className="w-full">
             <thead className="bg-slate-950 text-xs uppercase tracking-wider text-slate-400">
               <tr>
@@ -92,11 +94,11 @@ export default function WatchlistTable() {
             <tbody>
               {watchlist.map((item) => (
                 <tr
-                  key={item.debtor}
+                  key={item.debtorId ?? item.debtorCode ?? item.debtor}
                   className="border-t border-slate-800 transition-all duration-200 hover:bg-slate-800/40"
                 >
                   <td className="px-6 py-5 font-medium text-white">
-                    {item.debtor}
+                    <DebtorHoverDetail item={item} />
                   </td>
                   <td className="px-4 py-5 text-center text-slate-300">
                     Rp{item.exposure.toLocaleString("en-US")} B
