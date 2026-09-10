@@ -107,3 +107,15 @@ export async function getProfitabilityDashboard() {
   const [health, movement, drivers, earlyWarning, strategic, executive] = await Promise.all([getProfitabilityHealthScore(), getProfitabilityMovement(), getProfitabilityDrivers(), getProfitabilityEarlyWarning(), getProfitabilityStrategic(), getProfitabilityExecutive()]);
   return { health, movement, drivers, earlyWarning, strategic, executive };
 }
+
+export interface NimComparison {
+  unit: string; monthlyBasis: string; annualBasis: string;
+  points: Array<{ reportingDate: string; actualNimMtm: number | null; actualNimAnnual: number | null; spreadBps: number | null }>;
+}
+export async function getNimComparison(signal?: AbortSignal): Promise<NimComparison> {
+  const response = await fetch(`${API_BASE_URL}/intelligence/profitability/nim-comparison`, { signal });
+  if (!response.ok) throw new Error("NIM comparison unavailable");
+  const payload = await response.json() as ApiResponse<NimComparison>;
+  if (!payload.success || !Array.isArray(payload.data?.points)) throw new Error("NIM comparison unavailable");
+  return payload.data;
+}
