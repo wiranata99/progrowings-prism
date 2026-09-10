@@ -15,6 +15,9 @@ export interface CreditSector {
 }
 
 export interface CreditWatchlistItem {
+  debtorId?: string | null;
+  debtorCode?: string;
+  reportingDate?: string;
   debtor: string;
   exposure: number;
   dpd: number;
@@ -107,4 +110,18 @@ export function getCreditStrategicIntelligence(signal?: AbortSignal): Promise<Cr
 
 export function getCreditExecutiveNarrative(signal?: AbortSignal): Promise<CreditExecutiveNarrative> {
   return getCreditObject<CreditExecutiveNarrative>("executive-narrative", signal);
+}
+
+export interface CreditDebtorDetail {
+  debtorId: string; debtorCode: string; debtorName: string; reportingDate: string | null;
+  segment: string | null; sector: string | null; coreSector: string | null;
+  riskLevel: string | null; riskScore: number | null; primaryTrigger: string | null;
+  intelligenceNarrative: string | null; recommendedAttention: string | null;
+  numberOfAccounts: number; restructureStatus: string;
+  currencies: Array<{ currency: string; numberOfAccounts: number; outstandingAmount: number;
+    totalCkpn: number | null; interestOverdue: number | null; appliedInterestRate: number | null }>;
+}
+export function getCreditDebtorDetail(debtorId: string, reportingDate?: string, signal?: AbortSignal) {
+  const query = reportingDate ? `?reportingDate=${encodeURIComponent(reportingDate)}` : "";
+  return getCreditObject<CreditDebtorDetail>(`debtors/${encodeURIComponent(debtorId)}/detail${query}`, signal);
 }
