@@ -13,6 +13,8 @@ import type { IncomeStatementMovementViewModel } from "../presentation/mappers/i
 import type { StrategicIntelligenceViewModel } from "../presentation/mappers/strategicIntelligenceMapper";
 import type { ProfitabilityExecutiveViewModel } from "../presentation/mappers/profitabilityExecutiveMapper";
 
+import NimComparisonChart from "../components/profitability/NimComparisonChart";
+
 interface DashboardState { health: ProfitabilityHealthScoreViewModel; movement: IncomeStatementMovementViewModel; drivers: ProfitabilityDriversViewModel; earlyWarning: ProfitabilityEarlyWarningViewModel; strategic: StrategicIntelligenceViewModel; executive: ProfitabilityExecutiveViewModel; }
 
 export default function Profitability() {
@@ -24,6 +26,7 @@ export default function Profitability() {
     <SectionHeader eyebrow="Profitability Intelligence" title="Enterprise Profitability Performance" description="Comprehensive monitoring of profitability, financial performance, earnings quality, executive health assessment, and income statement movement." badge={data ? "Live" : error ? "Unavailable" : "Loading"} />
     {error && <div className="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-5 text-sm text-rose-200">{error}</div>}
     <ProfitabilityHealthScore data={data?.health ?? null} />
+    <NimComparisonChart />
     <IncomeStatementMovement data={data?.movement ?? null} />
     <ProfitDriverAnalysis data={data?.drivers ?? null} />
     <ProfitabilityEarlyWarning data={data?.earlyWarning ?? null} />
