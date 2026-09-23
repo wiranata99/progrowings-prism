@@ -124,7 +124,7 @@ export default function ExecutiveScore({
                     <p className="mt-1 text-[11px] text-slate-500">Prev {formatValue(domain.previousValue, domain.unit)}</p>
                   )}
                 </div>
-                <span className="text-xs font-bold text-cyan-300">{domain.score}/100</span>
+                <div className="text-right"><span className="text-xs font-bold text-cyan-300">{domain.score}/100</span>{domain.scoreBasisLabel && domain.scoreBasisLabel !== domain.indicatorLabel && <p className="mt-1 max-w-[120px] text-[9px] leading-3 text-slate-600">Score basis: {domain.scoreBasisLabel}</p>}</div>
               </div>
 
               <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-slate-800">
