@@ -5,10 +5,12 @@ import Header from "./Header";
 
 interface AppLayoutProps {
   children: ReactNode;
+  showHeaderContext?: boolean;
 }
 
 export default function AppLayout({
   children,
+  showHeaderContext = true,
 }: AppLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -17,14 +19,9 @@ export default function AppLayout({
 
   return (
     <div className="flex min-h-screen bg-[#060B16] text-white">
-
-      {/* Desktop Sidebar */}
-
       <div className="hidden xl:block">
         <Sidebar onClose={closeSidebar} />
       </div>
-
-      {/* Mobile Sidebar Overlay */}
 
       <div
         className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 xl:hidden ${
@@ -42,22 +39,16 @@ export default function AppLayout({
         </div>
       </div>
 
-      {/* Main Content */}
-
       <main className="min-w-0 flex-1 overflow-x-hidden">
-
         <Header
           onOpenSidebar={openSidebar}
+          showContextCards={showHeaderContext}
         />
 
         <div className="space-y-4 p-4 sm:p-6 lg:space-y-6 lg:p-8 xl:p-10">
-
           {children}
-
         </div>
-
       </main>
-
     </div>
   );
 }

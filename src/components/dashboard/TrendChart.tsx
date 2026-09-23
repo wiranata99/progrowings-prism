@@ -1,3 +1,64 @@
-import{Area,AreaChart,CartesianGrid,ResponsiveContainer,Tooltip,XAxis,YAxis}from"recharts";
-const fallback=[{reportingDate:"2026-01-31",value:1.90},{reportingDate:"2026-02-28",value:2.05},{reportingDate:"2026-03-31",value:2.01},{reportingDate:"2026-04-30",value:2.18},{reportingDate:"2026-05-31",value:2.32},{reportingDate:"2026-06-30",value:2.37},{reportingDate:"2026-07-31",value:2.42}];
-export default function TrendChart({label="Enterprise",unit="%",points=fallback}:{label?:string;unit?:string;points?:Array<{reportingDate:string;value:number}>}){const data=points.map(p=>({...p,month:new Date(p.reportingDate).toLocaleDateString("en-GB",{month:"short"})}));const latest=data.at(-1)?.value??0;return <div className="h-[320px]"><div className="mb-6 flex items-start justify-between"><div><p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-400">{label} Trend</p><h2 className="mt-2 text-3xl font-bold">{latest.toFixed(2)}{unit}</h2><p className="mt-1 text-sm text-slate-400">Latest observation</p></div><span className="rounded-full bg-emerald-500/15 px-3 py-1 text-sm font-semibold text-emerald-400">Live</span></div><ResponsiveContainer width="100%" height="70%"><AreaChart data={data}><CartesianGrid stroke="#263244" strokeDasharray="4 6"/><XAxis dataKey="month" tick={{fill:"#94A3B8",fontSize:11}}/><YAxis tick={{fill:"#94A3B8",fontSize:11}}/><Tooltip/><Area type="monotone" dataKey="value" stroke="#22D3EE" strokeWidth={3} fill="#22D3EE33"/></AreaChart></ResponsiveContainer></div>}
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+
+interface TrendPoint {
+  reportingDate: string;
+  value: number;
+}
+
+interface TrendChartProps {
+  label?: string;
+  unit?: string;
+  points?: TrendPoint[];
+}
+
+export default function TrendChart({ label = "Enterprise", unit = "%", points = [] }: TrendChartProps) {
+  const data = points.map((point) => ({
+    ...point,
+    month: new Date(point.reportingDate).toLocaleDateString("en-GB", { month: "short" }),
+  }));
+
+  if (!data.length) {
+    return <div className="flex h-[300px] items-center justify-center rounded-2xl border border-dashed border-slate-800 text-sm text-slate-500">No trend observations available.</div>;
+  }
+
+  const latest = data.at(-1)?.value ?? 0;
+  const previous = data.at(-2)?.value ?? latest;
+  const delta = latest - previous;
+
+  return (
+    <div>
+      <div className="mb-5 grid grid-cols-2 gap-3">
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Latest {label}</p>
+          <p className="mt-2 text-3xl font-black text-white">{latest.toFixed(2)}{unit}</p>
+        </div>
+        <div className="rounded-2xl border border-slate-800 bg-slate-950/45 p-4">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Latest movement</p>
+          <p className={`mt-2 text-3xl font-black ${delta <= 0 ? "text-emerald-300" : "text-amber-300"}`}>{delta > 0 ? "+" : ""}{delta.toFixed(2)} pp</p>
+        </div>
+      </div>
+
+      <div className="h-[250px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={data} margin={{ left: 0, right: 8, top: 8, bottom: 0 }}>
+            <defs>
+              <linearGradient id="dashboardTrend" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#22D3EE" stopOpacity={0.32} />
+                <stop offset="100%" stopColor="#22D3EE" stopOpacity={0.02} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid stroke="#263244" strokeDasharray="4 6" vertical={false} />
+            <XAxis dataKey="month" tick={{ fill: "#64748B", fontSize: 11 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: "#64748B", fontSize: 11 }} axisLine={false} tickLine={false} width={38} />
+            <Tooltip
+              contentStyle={{ backgroundColor: "#0f172a", border: "1px solid #334155", borderRadius: 12 }}
+              labelStyle={{ color: "#94a3b8" }}
+              formatter={(value) => [`${Number(value).toFixed(2)}${unit}`, label]}
+            />
+            <Area type="monotone" dataKey="value" stroke="#22D3EE" strokeWidth={3} fill="url(#dashboardTrend)" activeDot={{ r: 5 }} />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
