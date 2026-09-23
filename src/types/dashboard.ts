@@ -7,6 +7,11 @@ export interface DashboardDomain {
   previousValue?: number | null;
   unit?: string;
   reportingDate?: string | null;
+  scoreBasis?: string;
+  scoreBasisLabel?: string;
+  scoreBasisValue?: number;
+  scoreBasisPreviousValue?: number | null;
+  scoreBasisUnit?: string;
   status: "HEALTHY" | "WATCH" | "WARNING" | "CRITICAL";
   score: number;
 }
