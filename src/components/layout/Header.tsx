@@ -11,20 +11,22 @@ import {
 
 interface HeaderProps {
   onOpenSidebar?: () => void;
+  showContextCards?: boolean;
 }
 
 export default function Header({
   onOpenSidebar,
+  showContextCards = true,
 }: HeaderProps) {
   const { t, i18n } = useTranslation();
 
-const data = {
-  reportingDate: "30 June 2026",
-  lastRefresh: "Today, 08:30",
-  portfolio: "Rp60.5 Trillion",
-  riskAppetite: "Within Limit",
-  riskAppetiteClassName: "text-emerald-400",
-};
+  const data = {
+    reportingDate: "30 June 2026",
+    lastRefresh: "Today, 08:30",
+    portfolio: "Rp60.5 Trillion",
+    riskAppetite: "Within Limit",
+    riskAppetiteClassName: "text-emerald-400",
+  };
 
   return (
     <header className="border-b border-slate-800 bg-[#08111E] px-4 py-5 sm:px-6 lg:px-8 xl:px-10">
@@ -41,9 +43,7 @@ const data = {
 
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.30em] text-cyan-400 sm:text-xs">
-              {t(
-                "common.executiveCommandCenter"
-              )}
+              {t("common.executiveCommandCenter")}
             </p>
 
             <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl xl:text-4xl">
@@ -68,9 +68,7 @@ const data = {
           <div className="flex items-center rounded-2xl bg-slate-800 p-1">
             <button
               type="button"
-              onClick={() =>
-                i18n.changeLanguage("id")
-              }
+              onClick={() => i18n.changeLanguage("id")}
               className={`rounded-xl px-3 py-2 text-xs font-semibold transition ${
                 i18n.language === "id"
                   ? "bg-cyan-500 text-slate-950"
@@ -82,9 +80,7 @@ const data = {
 
             <button
               type="button"
-              onClick={() =>
-                i18n.changeLanguage("en")
-              }
+              onClick={() => i18n.changeLanguage("en")}
               className={`rounded-xl px-3 py-2 text-xs font-semibold transition ${
                 i18n.language === "en"
                   ? "bg-cyan-500 text-slate-950"
@@ -117,57 +113,45 @@ const data = {
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
-          <div className="flex items-center gap-2 text-cyan-400">
-            <CalendarDays size={16} />
-
-            <span className="text-xs uppercase tracking-wider">
-              {t("common.reportingDate")}
-            </span>
+      {showContextCards && (
+        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
+            <div className="flex items-center gap-2 text-cyan-400">
+              <CalendarDays size={16} />
+              <span className="text-xs uppercase tracking-wider">
+                {t("common.reportingDate")}
+              </span>
+            </div>
+            <p className="mt-2 text-lg font-semibold">{data.reportingDate}</p>
           </div>
 
-          <p className="mt-2 text-lg font-semibold">
-            {data.reportingDate}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
-          <div className="flex items-center gap-2 text-cyan-400">
-            <Clock3 size={16} />
-
-            <span className="text-xs uppercase tracking-wider">
-              {t("common.lastRefresh")}
-            </span>
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
+            <div className="flex items-center gap-2 text-cyan-400">
+              <Clock3 size={16} />
+              <span className="text-xs uppercase tracking-wider">
+                {t("common.lastRefresh")}
+              </span>
+            </div>
+            <p className="mt-2 text-lg font-semibold">{data.lastRefresh}</p>
           </div>
 
-          <p className="mt-2 text-lg font-semibold">
-            {data.lastRefresh}
-          </p>
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
+            <p className="text-xs uppercase tracking-wider text-cyan-400">
+              {t("common.portfolio")}
+            </p>
+            <p className="mt-2 text-lg font-semibold">{data.portfolio}</p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
+            <p className="text-xs uppercase tracking-wider text-cyan-400">
+              {t("common.riskAppetite")}
+            </p>
+            <p className={`mt-2 text-lg font-semibold ${data.riskAppetiteClassName}`}>
+              {data.riskAppetite}
+            </p>
+          </div>
         </div>
-
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
-          <p className="text-xs uppercase tracking-wider text-cyan-400">
-            {t("common.portfolio")}
-          </p>
-
-          <p className="mt-2 text-lg font-semibold">
-            {data.portfolio}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
-          <p className="text-xs uppercase tracking-wider text-cyan-400">
-            {t("common.riskAppetite")}
-          </p>
-
-          <p
-            className={`mt-2 text-lg font-semibold ${data.riskAppetiteClassName}`}
-          >
-            {data.riskAppetite}
-          </p>
-        </div>
-      </div>
+      )}
     </header>
   );
 }
